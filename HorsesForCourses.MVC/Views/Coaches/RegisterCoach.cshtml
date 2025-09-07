@@ -1,0 +1,16 @@
+﻿@using HorsesForCourses.MVC.Models.Coaches
+@model RegisterCoachViewModel
+
+<h2>Register Coach</h2>
+<form asp-action="RegisterCoach" method="post">
+    <div asp-validation-summary="ModelOnly"></div>
+
+    <label>Name</label>
+    <input asp-for="Name" />
+
+    <label>Email</label>
+    <input asp-for="Email" />
+
+    <button type="submit">Save</button>
+</form>
+<a asp-action="Index" class="btn btn-secondary">Back to list</a>

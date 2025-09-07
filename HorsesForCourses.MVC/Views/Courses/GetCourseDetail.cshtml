@@ -1,0 +1,44 @@
+﻿@using HorsesForCourses.MVC.Models.Courses
+@using HorsesForCourses.Service.Courses.GetCourseDetail
+@model CourseDetail
+
+<h2>Course Details</h2>
+<h3>@Model.Name</h3>
+
+<div class="mb-3">
+    <label class="form-label">Required Skills</label>
+    @if (Model.Skills.Any())
+    {
+        <ul class="list-group">
+            @foreach (var skill in Model.Skills)
+            {
+                <li class="list-group-item">@skill</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p class="text-muted">No skills registered</p>
+    }
+</div>
+
+<div class="mb-3">
+    <label class="form-label">TimeSlots</label>
+    @if (Model.TimeSlots.Any())
+    {
+        <ul class="list-group">
+            @foreach (var timeSlot in Model.TimeSlots)
+            {
+                <li class="list-group-item">
+                    @timeSlot.Day: @timeSlot.Start - @timeSlot.End
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p class="text-muted">No timeslots assigned</p>
+    }
+</div>
+
+<a asp-action="Index" class="btn btn-secondary">Back to list</a>

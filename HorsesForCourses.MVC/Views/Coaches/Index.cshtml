@@ -1,0 +1,38 @@
+﻿@using HorsesForCourses.Service.Coaches.GetCoaches
+@using HorsesForCourses.Service.Warehouse.Paging
+@model PagedResult<CoachSummary>
+
+<h2>Coaches</h2>
+
+<a class="nav-link text-dark" asp-area="" asp-controller="Coaches" asp-action="RegisterCoach">Register a new Coach</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th># Courses Assigned</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var coach in Model.Items)
+        {
+            <tr>
+                <td>@coach.Name</td>
+                <td>@coach.Email</td>
+                <td>@coach.NumberOfCoursesAssignedTo</td>
+                <td>
+                    <a class="nav-link text-dark" asp-controller="Coaches" asp-action="GetCoachDetail"
+                        asp-route-id="@coach.Id">
+                        Detail
+                    </a>
+                    <a class="nav-link text-dark" asp-controller="Coaches" asp-action="UpdateSkills"
+                        asp-route-id="@coach.Id">
+                        Skills
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

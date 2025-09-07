@@ -1,0 +1,59 @@
+﻿@using System.Text.Json
+@using HorsesForCourses.Core.Domain.Courses.TimeSlots
+@using HorsesForCourses.MVC.Models.Courses
+@model UpdateTimeSlotsViewModel
+
+<h2>Update Time Slots</h2>
+
+<h3>@Model.Name</h3>
+
+<form asp-action="UpdateTimeSlots" method="post" asp-antiforgery="true">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div id="time-slots-list"></div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+<a asp-action="Index" class="btn btn-secondary">Back to list</a>
+
+@section Scripts {
+    <script type="module">
+        import { renderItemList, selectBy } from '/js/Lists/item-list.js';
+        import { html, htmlList } from '/js/_utils/fabrication-facility.js';
+        // ---------------------------------------------------------------------
+        // -- Initialize List 'Component'
+        // ---------------------------------------------------------------------
+        (function () {
+            const timeSlots = @Html.Raw(JsonSerializer.Serialize(Model.TimeSlots));
+            renderItemList('Time Slots', 'Add Time Slot',
+                timeSlots,
+                () => ({ Day: -1, Start: -1, End: -1 }),
+                (timeSlot, ix) => html('div',
+                    timeSlotDaySelect('TimeSlots[' + ix + '].Day', timeSlot.Day),
+                    timeSlotHourSelect('TimeSlots[' + ix + '].Start', timeSlot.Start),
+                    timeSlotHourSelect('TimeSlots[' + ix + '].End', timeSlot.End)
+                ),
+                document.getElementById('time-slots-list')
+            );
+        })();
+        // ---------------------------------------------------------------------
+        // -- HELPERS
+        // ---------------------------------------------------------------------
+        function timeSlotDaySelect(name, current) {
+            return selectBy(name, current, a => a.value, a => a.label,
+                [
+                    { value: -1, label: '' },
+                    { value: 0, label: 'Monday' },
+                    { value: 1, label: 'Tuesday' },
+                    { value: 2, label: 'Wednesday' },
+                    { value: 3, label: 'Thursday' },
+                    { value: 4, label: 'Friday' }
+                ]);
+        }
+
+        function timeSlotHourSelect(name, current) {
+            return selectBy(name, current, a => a, a => a == -1 ? '' : a,
+                [-1, 9, 10, 11, 12, 13, 14, 15, 16, 17]);
+        }
+
+    </script>
+}

@@ -1,0 +1,45 @@
+﻿@using HorsesForCourses.MVC.Models.Coaches
+@using HorsesForCourses.Service.Coaches.GetCoachDetail
+@model CoachDetail
+
+<h2>Coach Details</h2>
+<h3>@Model.Name</h3>
+<h4>@Model.Email</h4>
+
+<div class="mb-3">
+    <label class="form-label">Skills</label>
+    @if (Model.Skills.Any())
+    {
+        <ul class="list-group">
+            @foreach (var skill in Model.Skills)
+            {
+                <li class="list-group-item">@skill</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p class="text-muted">No skills registered</p>
+    }
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Courses</label>
+    @if (Model.Courses.Any())
+    {
+        <ul class="list-group">
+            @foreach (var course in Model.Courses)
+            {
+                <li class="list-group-item">
+                    @course.Id - @course.Name
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p class="text-muted">No courses assigned</p>
+    }
+</div>
+
+<a asp-action="Index" class="btn btn-secondary">Back to list</a>
