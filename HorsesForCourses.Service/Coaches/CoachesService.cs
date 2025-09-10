@@ -1,4 +1,6 @@
+using HorsesForCourses.Core.Domain.Actors;
 using HorsesForCourses.Core.Domain.Coaches;
+using HorsesForCourses.Core.Domain.Coaches.Permissions;
 using HorsesForCourses.Service.Coaches.GetCoachDetail;
 using HorsesForCourses.Service.Coaches.GetCoaches;
 using HorsesForCourses.Service.Coaches.Repository;

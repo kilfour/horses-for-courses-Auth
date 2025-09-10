@@ -1,5 +1,6 @@
 using HorsesForCourses.Core.Abstractions;
 using HorsesForCourses.Core.Domain.Coaches.InvalidationReasons;
+using HorsesForCourses.Core.Domain.Coaches.Permissions;
 using HorsesForCourses.Core.Domain.Courses;
 using HorsesForCourses.Core.Domain.Skills;
 using HorsesForCourses.Core.ValidationHelpers;
@@ -26,10 +27,14 @@ public class Coach : DomainEntity<Coach>
 
     public virtual void UpdateSkills(IEnumerable<string> newSkills)
     {
+        //OnlyActorsWhoRegisteredAsCoachCanEdit();
         NotAllowedWhenThereAreDuplicateSkills();
         OverwriteSkills();
         // ------------------------------------------------------------------------------------------------
         // --
+        // bool OnlyActorsWhoRegisteredAsCoachCanEdit()
+        //     => permission.CoachId != Id ? throw new UnauthorizedAccessException() : true;
+
         bool NotAllowedWhenThereAreDuplicateSkills()
             => newSkills.NoDuplicatesAllowed(a => new CoachAlreadyHasSkill(string.Join(",", a)));
         void OverwriteSkills()

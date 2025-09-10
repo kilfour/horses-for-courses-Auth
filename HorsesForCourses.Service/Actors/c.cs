@@ -1,0 +1,34 @@
+using System.Security.Claims;
+using HorsesForCourses.Core.Domain.Actors;
+using HorsesForCourses.Core.Domain.Jockeys;
+
+namespace HorsesForCourses.Service.Actors;
+
+public static class Mint
+{
+
+
+    public static IEnumerable<Claim> ClaimsFromActor(Actor actor)
+    {
+        var claims = new List<Claim>();
+        foreach (var permission in actor.Permissions)
+        {
+            claims.AddRange(permission switch
+            {
+                Permission.UpdateCoachSkills => GetCoachUpdateSkillsClaims(actor),
+                _ => throw new NotImplementedException()
+            });
+        }
+        return claims;
+    }
+
+    private static IEnumerable<Claim> GetCoachUpdateSkillsClaims(Actor actor)
+    {
+        return actor.OwnedCoachIds.Select(a => new Claim("capability", $"coach:update-skills-{a}"));
+    }
+
+    //     public static Capability CapabilityFromActor()
+    //     {
+
+    //     }
+}

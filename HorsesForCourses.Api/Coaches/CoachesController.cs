@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using HorsesForCourses.Service.Coaches;
 using HorsesForCourses.Api.Abstract;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HorsesForCourses.Api.Coaches;
 

@@ -1,3 +1,13 @@
+### auth
+POST http://localhost:5200/auth/token
+Content-Type: application/json
+
+{
+  "name": "Alice",
+  "email": "alice@example.com",
+  "password": "yep"
+}
+
 ### Register Coach
 POST http://localhost:5200/coaches
 Content-Type: application/json
@@ -9,10 +19,11 @@ Content-Type: application/json
 
 ### Update Skills
 POST http://localhost:5200/coaches/1/skills
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6InVzZXIuTmFtZSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJ1c2VyLkVtYWlsIiwiZXhwIjoxNzU3NDk1MTM1LCJpc3MiOiJodHRwczovL2hmY2MuZXhhbXBsZSIsImF1ZCI6ImhmY2MtYXBpIn0.l3IZjjvltQ0uOqcwhYWKNVjcOBdiSJNpd3fxoKzI-HY
 Content-Type: application/json
 
 {
-  "skills": ["C#", "LINQ"]
+  "skills": ["C#", "LIsNQ"]
 }
 
 ### Get Coaches
