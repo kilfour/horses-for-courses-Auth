@@ -10,7 +10,7 @@ public class D_GetCoachDetailData : DatabaseTests
     private IdPrimitive IdAssignedByDb;
 
     private async Task<CoachDetail?> Act()
-        => await new GetCoachDetail(GetDbContext()).One(IdAssignedByDb);
+        => await new GetCoachDetailQuery(GetDbContext()).One(IdAssignedByDb);
 
     [Fact]
     public async Task With_Coach()

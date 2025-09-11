@@ -21,7 +21,7 @@ public static class BuilderExtensions
 
             .AddScoped<IGetCoachById, GetCoachById>()
             .AddScoped<IGetCoachSummaries, GetCoachSummaries>()
-            .AddScoped<IGetCoachDetail, GetCoachDetail>()
+            .AddScoped<IGetCoachDetailQuery, GetCoachDetailQuery>()
 
             .AddScoped<IGetCourseById, GetCourseById>()
             .AddScoped<IGetCourseSummaries, GetCourseSummaries>()

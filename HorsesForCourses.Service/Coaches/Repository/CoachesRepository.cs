@@ -9,4 +9,4 @@ public record CoachesRepository(
     IAmASuperVisor Supervisor,
     IGetCoachById GetCoachById,
     IGetCoachSummaries GetCoachSummaries,
-    IGetCoachDetail GetCoachDetail);
+    IGetCoachDetailQuery GetCoachDetail);

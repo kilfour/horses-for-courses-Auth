@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HorsesForCourses.Service.Coaches.GetCoachDetail;
 
-public interface IGetCoachDetail
+public interface IGetCoachDetailQuery
 {
     Task<CoachDetail?> One(IdPrimitive id);
 }
 
-public class GetCoachDetail(AppDbContext dbContext) : IGetCoachDetail
+public class GetCoachDetailQuery(AppDbContext dbContext) : IGetCoachDetailQuery
 {
     private readonly AppDbContext dbContext = dbContext;
 
