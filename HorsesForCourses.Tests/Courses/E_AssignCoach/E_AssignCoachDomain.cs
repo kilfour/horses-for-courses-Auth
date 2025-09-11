@@ -83,7 +83,7 @@ public class E_AssignCoachDomain : CourseDomainTests
         Assert.Equal(DayOfWeek.Tuesday, 19.August(2025).DayOfWeek);
         // --
         var courseA = new CourseA(19.August(2025), 19.August(2025)).FullDayOnTuesday();
-        var courseB = new CourseB(20.August(2025), 25.August(2025)).FullDayOnTuesday();
+        var courseB = new CourseB(20.August(2025), 25.August(2025)).FullDayOnTuesday(); // no tuesday here
         AssignTheCoach(courseA, courseB);
     }
 

@@ -2,11 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using HorsesForCourses.MVC.Models.Account;
-using HorsesForCourses.MVC.Controllers.Abstract;
 
 namespace HorsesForCourses.MVC.Controllers;
 
-public class ActorController : Controller
+public class AccountController : Controller
 {
     [HttpGet]
     public IActionResult Login()
@@ -23,6 +22,12 @@ public class ActorController : Controller
         var id = new ClaimsIdentity(claims, "Cookies");
         await HttpContext.SignInAsync("Cookies", new ClaimsPrincipal(id));
         return Redirect("/");
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Register()
+    {
+        return await Task.FromResult(View(new RegisterAccountViewModel()));
     }
 
     [HttpPost]
