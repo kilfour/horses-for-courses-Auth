@@ -9,9 +9,9 @@ namespace HorsesForCourses.MVC.Controllers;
 
 public class AccountController : MvcController
 {
-    private readonly IAccountService accountService;
+    private readonly IAccountsService accountService;
 
-    public AccountController(IAccountService accountService)
+    public AccountController(IAccountsService accountService)
     {
         this.accountService = accountService;
     }

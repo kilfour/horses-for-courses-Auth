@@ -5,10 +5,10 @@ namespace HorsesForCourses.Tests.Tools.Coaches;
 
 public abstract class AccountControllerTests
 {
-    protected readonly Mock<IAccountService> service;
+    protected readonly Mock<IAccountsService> service;
 
     public AccountControllerTests()
     {
-        service = new Mock<IAccountService>();
+        service = new Mock<IAccountsService>();
     }
 }

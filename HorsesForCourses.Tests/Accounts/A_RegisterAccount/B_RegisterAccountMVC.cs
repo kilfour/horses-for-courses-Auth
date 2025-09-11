@@ -13,8 +13,8 @@ public class B_RegisterAccountMVC : AccountMVCControllerTests
     {
         Name = TheCanonical.CoachName,
         Email = TheCanonical.CoachEmail,
-        Pass = "pass123",
-        PassConfirm = "pass123",
+        Pass = TheCanonical.Password,
+        PassConfirm = TheCanonical.Password,
         AsCoach = false
     };
 
@@ -32,7 +32,12 @@ public class B_RegisterAccountMVC : AccountMVCControllerTests
     public async Task RegisterCoach_POST_calls_the_service()
     {
         await controller.Register(viewModel);
-        service.Verify(a => a.Register(TheCanonical.CoachName, TheCanonical.CoachEmail, "pass123", "pass123", false));
+        service.Verify(a => a.Register(
+            TheCanonical.CoachName,
+            TheCanonical.CoachEmail,
+            TheCanonical.Password,
+            TheCanonical.Password,
+            false));
     }
 
     [Fact]

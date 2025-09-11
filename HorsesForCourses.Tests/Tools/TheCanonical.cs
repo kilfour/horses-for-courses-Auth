@@ -61,4 +61,7 @@ public static class TheCanonical
 
     public static CourseDetail CourseDetail()
         => new() { Id = CourseId, Name = CourseName, Start = CourseStart, End = CourseEnd };
+
+
+    public const string Password = "pass123";
 }

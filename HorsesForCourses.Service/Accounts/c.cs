@@ -1,6 +1,6 @@
 using System.Security.Claims;
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Core.Domain.Actors;
-using HorsesForCourses.Core.Domain.Jockeys;
 
 namespace HorsesForCourses.Service.Actors;
 
@@ -8,7 +8,7 @@ public static class Mint
 {
 
 
-    public static IEnumerable<Claim> ClaimsFromActor(Actor actor)
+    public static IEnumerable<Claim> ClaimsFromActor(ApplicationUser actor)
     {
         var claims = new List<Claim>();
         foreach (var permission in actor.Permissions)
@@ -22,9 +22,9 @@ public static class Mint
         return claims;
     }
 
-    private static IEnumerable<Claim> GetCoachUpdateSkillsClaims(Actor actor)
+    private static IEnumerable<Claim> GetCoachUpdateSkillsClaims(ApplicationUser actor)
     {
-        return actor.OwnedCoachIds.Select(a => new Claim("capability", $"coach:update-skills-{a}"));
+        return []; //actor.OwnedCoachIds.Select(a => new Claim("capability", $"coach:update-skills-{a}"));
     }
 
     //     public static Capability CapabilityFromActor()
