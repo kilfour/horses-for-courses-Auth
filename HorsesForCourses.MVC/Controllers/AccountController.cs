@@ -2,11 +2,19 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using HorsesForCourses.MVC.Models.Account;
+using HorsesForCourses.Service.Actors;
+using HorsesForCourses.MVC.Controllers.Abstract;
 
 namespace HorsesForCourses.MVC.Controllers;
 
-public class AccountController : Controller
+public class AccountController : MvcController
 {
+    private readonly IAccountService accountService;
+
+    public AccountController(IAccountService accountService)
+    {
+        this.accountService = accountService;
+    }
     [HttpGet]
     public IActionResult Login()
     {
@@ -31,14 +39,15 @@ public class AccountController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Register(string name, string email, bool asCoach)
-    {
-        // var user = AppUser.From(account.Name, account.Email, account.Password, account.PassConfirm, choice);
-        // if (choice == "coach") { await _coachService.CreateCoach(new Coach(account.Name, account.Email)); }
-        // await _service.CreateUser(user);
-
-        return Redirect("/");
-    }
+    public async Task<IActionResult> Register(RegisterAccountViewModel viewModel)
+        => await This(async () => await accountService.Register(
+                viewModel.Name,
+                viewModel.Email,
+                viewModel.Pass,
+                viewModel.PassConfirm,
+                viewModel.AsCoach))
+            .OnSuccess(() => RedirectToAction(nameof(Index), "Home"))
+            .OnException(() => View(viewModel));
 
     [HttpPost]
     public async Task<IActionResult> Logout()

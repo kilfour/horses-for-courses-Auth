@@ -20,7 +20,7 @@ public class B_RegisterCoachMVC : CoachesMVCControllerTests
     }
 
     [Fact]
-    public async Task RegisterCoach_POST_Puts_The_Coach_In_Storage()
+    public async Task RegisterCoach_POST_calls_the_service()
     {
         await controller.RegisterCoach(TheCanonical.CoachName, TheCanonical.CoachEmail);
         service.Verify(a => a.RegisterCoach(TheCanonical.CoachName, TheCanonical.CoachEmail));
