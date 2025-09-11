@@ -23,12 +23,15 @@ public class ApplicationUser : DomainEntity<ApplicationUser>
         PasswordHash = passwordHash;
     }
 
-    public static ApplicationUser Create(string name, string email, string pass, string confirmPass, IPasswordHasher passwordHasher)
+    public static ApplicationUser Create(string name, string email, string pass, string confirmPass)
     {
         if (pass != confirmPass)
             throw new PasswordAndPasswordConfirmDoNotMatch();
 
-        return new ApplicationUser(name, email, passwordHasher.Hash(pass));
+        if (string.IsNullOrWhiteSpace(pass))
+            throw new PasswordCanNotBeEmpty();
+
+        return new ApplicationUser(name, email, new Pbkdf2PasswordHasher().Hash(pass));
     }
 }
 

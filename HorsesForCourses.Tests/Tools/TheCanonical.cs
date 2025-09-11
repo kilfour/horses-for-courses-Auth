@@ -68,7 +68,7 @@ public static class TheCanonical
 
     public static ApplicationUser ApplicationUser()
        => HorsesForCourses.Core.Domain.Accounts.ApplicationUser.Create(
-            CoachName, CoachEmail, Password, Password, new Pbkdf2PasswordHasher());
+            CoachName, CoachEmail, Password, Password);
 
     public const string Password = "pass123";
 }

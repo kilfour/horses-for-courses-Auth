@@ -3,7 +3,7 @@ using HorsesForCourses.Core.Domain.Actors.InvalidationReasons;
 
 namespace HorsesForCourses.Core.Domain.Accounts;
 
-public record ApplicationUserEmail : DefaultString<JockeyEmailCanNotBeEmpty, JockeyEmailCanNotBeTooLong>
+public record ApplicationUserEmail : DefaultString<ApplicationUserEmailCanNotBeEmpty, ApplicationUserEmailCanNotBeTooLong>
 {
     public ApplicationUserEmail(string value) : base(value) { }
     protected ApplicationUserEmail() { }
