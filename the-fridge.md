@@ -7,3 +7,7 @@ in method f.i. `Coach.UpdateSkills(...)`: `actor.CanUpdateSkills()`.
 really usefull test : `StringFields.AllStringsHaveLengthDefined()`
 
 Todo : HorsesForCourses.Tests.Accounts.B_Login.C_LoginService
+
+We could do with an *is everything resolvable* test. Not a priority, just QoL.
+
+*Problem ?* not logged in after register

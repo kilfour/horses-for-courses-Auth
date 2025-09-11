@@ -23,13 +23,15 @@ app.UseAuthorization();
 
 if (!app.Environment.IsDevelopment())
 {
-    using (var scope = app.Services.CreateScope())
-    {
-        scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.EnsureCreated();
-    }
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+
+using (var scope = app.Services.CreateScope())
+{
+    scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.EnsureCreated();
+}
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();

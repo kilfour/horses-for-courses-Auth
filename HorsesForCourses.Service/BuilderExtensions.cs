@@ -1,3 +1,5 @@
+using HorsesForCourses.Service.Accounts;
+using HorsesForCourses.Service.Accounts.GetApplicationUserByEmail;
 using HorsesForCourses.Service.Coaches;
 using HorsesForCourses.Service.Coaches.GetCoachById;
 using HorsesForCourses.Service.Coaches.GetCoachDetail;
@@ -17,19 +19,21 @@ public static class BuilderExtensions
 {
     public static IServiceCollection AddHorsesForCourses(this IServiceCollection services)
         => services
+            // === Common === 
             .AddScoped<IAmASuperVisor, DataSupervisor>()
-
             .AddScoped<IGetCoachById, GetCoachById>()
+            // === Coaches === 
             .AddScoped<IGetCoachSummaries, GetCoachSummaries>()
             .AddScoped<IGetCoachDetailQuery, GetCoachDetailQuery>()
-
+            .AddScoped<CoachesRepository>()
+            .AddScoped<ICoachesService, CoachesService>()
+            // === Courses === 
             .AddScoped<IGetCourseById, GetCourseById>()
             .AddScoped<IGetCourseSummaries, GetCourseSummaries>()
             .AddScoped<IGetCourseDetail, GetCourseDetail>()
-
-            .AddScoped<CoachesRepository>()
             .AddScoped<CoursesRepository>()
-
-            .AddScoped<ICoachesService, CoachesService>()
-            .AddScoped<ICoursesService, CoursesService>();
+            .AddScoped<ICoursesService, CoursesService>()
+            // === Accounts === 
+            .AddScoped<IGetApplicationUserByEmail, GetApplicationUserByEmail>()
+            .AddScoped<IAccountsService, AccountsService>();
 }
