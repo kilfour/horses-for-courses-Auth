@@ -1,6 +1,5 @@
 using HorsesForCourses.Api.Courses;
 using HorsesForCourses.Core.Domain.Accounts;
-using HorsesForCourses.Core.Domain.Actors;
 using HorsesForCourses.Core.Domain.Coaches;
 using HorsesForCourses.Core.Domain.Courses;
 using HorsesForCourses.Core.Domain.Courses.TimeSlots;
@@ -11,7 +10,6 @@ using HorsesForCourses.Service.Coaches.GetCoaches;
 using HorsesForCourses.Service.Courses.GetCourseDetail;
 using HorsesForCourses.Service.Courses.GetCourses;
 using HorsesForCourses.Service.Warehouse.Paging;
-using Microsoft.AspNetCore.Identity;
 using WibblyWobbly;
 using static HorsesForCourses.Service.Courses.GetCourseDetail.CourseDetail;
 

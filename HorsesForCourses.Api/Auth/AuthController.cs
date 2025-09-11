@@ -4,6 +4,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
+namespace HorsesForCourses.Api.Auth;
+
 [ApiController]
 [Route("auth")]
 public class AuthController : ControllerBase
@@ -21,9 +23,9 @@ public class AuthController : ControllerBase
 
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, "user.Name"),
-            new Claim(ClaimTypes.Name, "user.Email"),
-        };
+        new Claim(ClaimTypes.NameIdentifier, "user.Name"),
+        new Claim(ClaimTypes.Name, "user.Email"),
+    };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_cfg["Auth:JwtKey"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace HorsesForCourses.Core.Domain.Actors;
+namespace HorsesForCourses.Core.Domain.Accounts;
 
 public interface IPasswordHasher { string Hash(string password); bool Verify(string password, string hash); }
 

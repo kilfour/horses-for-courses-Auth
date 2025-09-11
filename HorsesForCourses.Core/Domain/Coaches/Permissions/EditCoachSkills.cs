@@ -1,5 +1,5 @@
 using HorsesForCourses.Core.Abstractions;
-using HorsesForCourses.Core.Domain.Actors;
+using HorsesForCourses.Core.Domain.Accounts;
 
 namespace HorsesForCourses.Core.Domain.Coaches.Permissions;
 

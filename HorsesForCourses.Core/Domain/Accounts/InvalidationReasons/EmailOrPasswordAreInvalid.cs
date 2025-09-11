@@ -1,3 +1,3 @@
 namespace HorsesForCourses.Core.Domain.Accounts.InvalidationReasons;
 
-public class ApplicationUserEmailCanNotBeEmpty : DomainException { }
+public class EmailOrPasswordAreInvalid : DomainException { }

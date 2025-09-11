@@ -1,6 +1,5 @@
 using HorsesForCourses.Core.Abstractions;
-using HorsesForCourses.Core.Domain.Actors;
-using HorsesForCourses.Core.Domain.Actors.InvalidationReasons;
+using HorsesForCourses.Core.Domain.Accounts.InvalidationReasons;
 using HorsesForCourses.Core.Domain.Coaches;
 
 namespace HorsesForCourses.Core.Domain.Accounts;

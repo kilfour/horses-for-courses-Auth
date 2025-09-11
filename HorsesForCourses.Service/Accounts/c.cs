@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using HorsesForCourses.Core.Domain.Accounts;
-using HorsesForCourses.Core.Domain.Actors;
 
 namespace HorsesForCourses.Service.Actors;
 

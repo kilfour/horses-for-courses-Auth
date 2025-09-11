@@ -10,26 +10,32 @@ namespace HorsesForCourses.MVC.Controllers;
 public class AccountController : MvcController
 {
     private readonly IAccountsService accountService;
+    private readonly IAuthenticationService authenticationService;
 
-    public AccountController(IAccountsService accountService)
+    public AccountController(IAccountsService accountService, IAuthenticationService authenticationService)
     {
         this.accountService = accountService;
+        this.authenticationService = authenticationService;
     }
+
     [HttpGet]
-    public IActionResult Login()
+    public async Task<IActionResult> Login()
     {
-        return View(new LoginViewModel());
+        return await Task.FromResult(View(new LoginViewModel()));
     }
 
     [HttpPost]
-    public async Task<IActionResult> Login(string name, string email, bool asCoach)
+    public async Task<IActionResult> Login(string email, string password)
     {
-        var claims = new List<Claim> {
-            new(ClaimTypes.Name, email)
-        };
-        var id = new ClaimsIdentity(claims, "Cookies");
-        await HttpContext.SignInAsync("Cookies", new ClaimsPrincipal(id));
-        return Redirect("/");
+        return await This(async () =>
+            {
+                var claims = await accountService.Login(email, password);
+                var id = new ClaimsIdentity(claims, "Cookies");
+                await authenticationService.SignInAsync(HttpContext, "Cookies", new ClaimsPrincipal(id), new AuthenticationProperties());
+            })
+            .OnSuccess(() => RedirectToAction(nameof(HomeController.Index), "Home"))
+            .OnException(() => View(new LoginViewModel { Email = email }));
+
     }
 
     [HttpGet]

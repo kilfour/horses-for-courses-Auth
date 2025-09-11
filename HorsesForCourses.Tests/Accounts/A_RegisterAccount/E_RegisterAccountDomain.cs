@@ -1,5 +1,5 @@
 using HorsesForCourses.Core.Domain.Accounts;
-using HorsesForCourses.Core.Domain.Actors.InvalidationReasons;
+using HorsesForCourses.Core.Domain.Accounts.InvalidationReasons;
 using HorsesForCourses.Core.Domain.Coaches;
 using HorsesForCourses.Core.Domain.Coaches.InvalidationReasons;
 using HorsesForCourses.Tests.Tools;

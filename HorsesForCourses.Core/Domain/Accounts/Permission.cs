@@ -1,4 +1,4 @@
-namespace HorsesForCourses.Core.Domain.Actors;
+namespace HorsesForCourses.Core.Domain.Accounts;
 
 public enum Permission
 {

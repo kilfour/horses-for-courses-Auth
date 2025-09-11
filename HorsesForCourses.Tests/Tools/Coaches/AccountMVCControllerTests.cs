@@ -9,6 +9,6 @@ public abstract class AccountMVCControllerTests : AccountControllerTests
 
     public AccountMVCControllerTests()
     {
-        controller = new AccountController(service.Object);
+        controller = new AccountController(service.Object, authenticationService.Object);
     }
 }

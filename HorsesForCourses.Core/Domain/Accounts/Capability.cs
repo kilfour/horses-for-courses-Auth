@@ -1,6 +1,3 @@
-using HorsesForCourses.Core.Abstractions;
-using HorsesForCourses.Core.Domain.Coaches;
-
-namespace HorsesForCourses.Core.Domain.Actors;
+namespace HorsesForCourses.Core.Domain.Accounts;
 
 public abstract record Capability();

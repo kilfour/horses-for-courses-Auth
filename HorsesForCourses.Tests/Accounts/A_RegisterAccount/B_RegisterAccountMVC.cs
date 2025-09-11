@@ -1,4 +1,4 @@
-using HorsesForCourses.Core.Domain.Actors.InvalidationReasons;
+using HorsesForCourses.Core.Domain.Accounts.InvalidationReasons;
 using HorsesForCourses.MVC.Models.Account;
 using HorsesForCourses.Tests.Tools;
 using HorsesForCourses.Tests.Tools.Coaches;
