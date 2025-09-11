@@ -49,5 +49,10 @@ public class E_RegisterCoachDomain : CoachDomainTests
     [Fact]
     public void RegisterCoach_With_unauthenticated_ShouldThrow()
         => Assert.Throws<UnauthorizedAccessException>(
-            () => Coach.From(TheCanonical.UnauthenticatedActor(), TheCanonical.CoachName, new string('-', 101)));
+            () => Coach.From(TheCanonical.EmptyActor, TheCanonical.CoachName, new string('-', 101)));
+
+    [Fact]
+    public void RegisterCoach_With_non_admin_ShouldThrow()
+        => Assert.Throws<UnauthorizedAccessException>(
+            () => Coach.From(TheCanonical.EmptyActor, TheCanonical.CoachName, new string('-', 101)));
 }

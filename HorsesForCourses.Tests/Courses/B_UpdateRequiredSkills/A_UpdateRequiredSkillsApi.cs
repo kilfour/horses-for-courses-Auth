@@ -1,3 +1,4 @@
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Tests.Tools;
 using HorsesForCourses.Tests.Tools.Courses;
 using Microsoft.AspNetCore.Mvc;
@@ -12,13 +13,13 @@ public class A_UpdateRequiredSkillsApi : CoursesApiControllerTests
     public async Task UpdateRequiredSkills_uses_the_service()
     {
         var response = await controller.UpdateRequiredSkills(TheCanonical.CourseId, TheCanonical.Skills);
-        service.Verify(a => a.UpdateRequiredSkills(TheCanonical.CourseId, TheCanonical.Skills));
+        service.Verify(a => a.UpdateRequiredSkills(It.IsAny<Actor>(), TheCanonical.CourseId, TheCanonical.Skills));
     }
 
     [Fact]
     public async Task UpdateRequiredSkills_Returns_NoContent()
     {
-        service.Setup(a => a.UpdateRequiredSkills(TheCanonical.CourseId, TheCanonical.Skills)).ReturnsAsync(true);
+        service.Setup(a => a.UpdateRequiredSkills(It.IsAny<Actor>(), TheCanonical.CourseId, TheCanonical.Skills)).ReturnsAsync(true);
         var response = await controller.UpdateRequiredSkills(TheCanonical.CourseId, TheCanonical.Skills);
         Assert.IsType<NoContentResult>(response);
     }

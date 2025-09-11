@@ -14,7 +14,7 @@ public class CoursesController(ICoursesService Service) : MvcController
 
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateCourse(string name, DateOnly startDate, DateOnly endDate)
-        => await This(async () => await Service.CreateCourse(name, startDate, endDate))
+        => await This(async () => await Service.CreateCourse(GetActor(), name, startDate, endDate))
             .OnSuccess(() => RedirectToAction(nameof(Index)))
             .OnException(() => View(new CreateCourseViewModel(name, startDate, endDate)));
 
@@ -24,7 +24,7 @@ public class CoursesController(ICoursesService Service) : MvcController
 
     [HttpPost("UpdateRequiredSkills/{id}"), ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateRequiredSkills(IdPrimitive id, List<string> skills)
-        => await This(async () => await Service.UpdateRequiredSkills(id, skills))
+        => await This(async () => await Service.UpdateRequiredSkills(GetActor(), id, skills))
             .OnSuccess(() => RedirectToAction(nameof(Index)))
             .OnException(async () =>
                 ViewOrNotFoundIfNull(await Service.GetCourseDetail(id), a => new UpdateRequiredSkillsViewModel(a!)));
@@ -35,7 +35,7 @@ public class CoursesController(ICoursesService Service) : MvcController
 
     [HttpPost("UpdateTimeSlots/{id}"), ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateTimeSlots(IdPrimitive id, IEnumerable<TimeSlotViewModel> timeSlots)
-        => await This(async () => await Service.UpdateTimeSlots(id, timeSlots, a => (a.Day, a.Start, a.End)))
+        => await This(async () => await Service.UpdateTimeSlots(GetActor(), id, timeSlots, a => (a.Day, a.Start, a.End)))
             .OnSuccess(() => RedirectToAction(nameof(Index)))
             .OnException(async () =>
                 ViewOrNotFoundIfNull(await Service.GetCourseDetail(id), a => new UpdateTimeSlotsViewModel(a!)));
@@ -46,7 +46,7 @@ public class CoursesController(ICoursesService Service) : MvcController
 
     [HttpPost("ConfirmCourse/{id}"), ValidateAntiForgeryToken]
     public async Task<IActionResult> ConfirmCourse(IdPrimitive id)
-        => await This(async () => await Service.ConfirmCourse(id))
+        => await This(async () => await Service.ConfirmCourse(GetActor(), id))
             .OnSuccess(() => RedirectToAction(nameof(Index)))
             .OnException(async () =>
                 ViewOrNotFoundIfNull(await Service.GetCourseDetail(id), a => new ConfirmCourseViewModel(a!)));
@@ -57,7 +57,7 @@ public class CoursesController(ICoursesService Service) : MvcController
 
     [HttpPost("AssignCoach/{id}"), ValidateAntiForgeryToken]
     public async Task<IActionResult> AssignCoach(IdPrimitive id, IdPrimitive coachId)
-        => await This(async () => await Service.AssignCoach(id, coachId))
+        => await This(async () => await Service.AssignCoach(GetActor(), id, coachId))
             .OnSuccess(() => RedirectToAction(nameof(Index)))
             .OnException(async () =>
                 ViewOrNotFoundIfNull(await Service.GetCourseDetail(id), a => new AssignCoachViewModel(a!)));

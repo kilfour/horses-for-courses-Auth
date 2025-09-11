@@ -1,7 +1,6 @@
 using HorsesForCourses.Core.Abstractions;
 using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Core.Domain.Coaches.InvalidationReasons;
-using HorsesForCourses.Core.Domain.Coaches.Permissions;
 using HorsesForCourses.Core.Domain.Courses;
 using HorsesForCourses.Core.Domain.Skills;
 using HorsesForCourses.Core.ValidationHelpers;

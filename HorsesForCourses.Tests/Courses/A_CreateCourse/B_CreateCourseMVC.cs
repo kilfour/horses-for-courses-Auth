@@ -1,3 +1,4 @@
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Core.Domain.Courses.InvalidationReasons;
 using HorsesForCourses.MVC.Models.Courses;
 using HorsesForCourses.Tests.Tools;
@@ -28,7 +29,7 @@ public class B_CreateCourseMVC : CoursesMVCControllerTests
     public async Task CreateCourse_POST_Puts_The_Course_In_Storage()
     {
         await CreateCourse_POST();
-        service.Verify(a => a.CreateCourse(TheCanonical.CourseName, TheCanonical.CourseStart, TheCanonical.CourseEnd));
+        service.Verify(a => a.CreateCourse(It.IsAny<Actor>(), TheCanonical.CourseName, TheCanonical.CourseStart, TheCanonical.CourseEnd));
     }
 
     [Fact]
@@ -43,7 +44,7 @@ public class B_CreateCourseMVC : CoursesMVCControllerTests
     public async Task CreateCourse_POST_Returns_View_On_Exception()
     {
         service
-            .Setup(a => a.CreateCourse("", TheCanonical.CourseStart, TheCanonical.CourseEnd))
+            .Setup(a => a.CreateCourse(It.IsAny<Actor>(), "", TheCanonical.CourseStart, TheCanonical.CourseEnd))
             .ThrowsAsync(new CourseNameCanNotBeEmpty());
         var result = await controller.CreateCourse("", TheCanonical.CourseStart, TheCanonical.CourseEnd);
         var view = Assert.IsType<ViewResult>(result);
@@ -57,7 +58,7 @@ public class B_CreateCourseMVC : CoursesMVCControllerTests
     public async Task CreateCourse_POST_Returns_View_With_ModelError_On_Exception()
     {
         service
-            .Setup(a => a.CreateCourse("", TheCanonical.CourseStart, TheCanonical.CourseEnd))
+            .Setup(a => a.CreateCourse(It.IsAny<Actor>(), "", TheCanonical.CourseStart, TheCanonical.CourseEnd))
             .ThrowsAsync(new CourseNameCanNotBeEmpty());
         var result = await controller.CreateCourse("", TheCanonical.CourseStart, TheCanonical.CourseEnd);
         Assert.False(controller.ModelState.IsValid);

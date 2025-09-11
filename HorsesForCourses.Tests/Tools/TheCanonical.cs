@@ -18,9 +18,11 @@ namespace HorsesForCourses.Tests.Tools;
 
 public static class TheCanonical
 {
+    public static Actor AdminActor()
+        => new Actor().Declare(ClaimTypes.Name, CoachName).Declare(ClaimTypes.Role, "admin");
     public static Actor AuthenticatedActor()
         => new Actor().Declare(ClaimTypes.Name, CoachName);
-    public static Actor UnauthenticatedActor() => new();
+    public static Actor EmptyActor => new();
 
     public static readonly IdPrimitive BadId = -1;
 

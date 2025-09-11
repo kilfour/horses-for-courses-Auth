@@ -1,3 +1,4 @@
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Core.Domain.Courses.InvalidationReasons;
 using HorsesForCourses.MVC.Models.Courses;
 using HorsesForCourses.Service.Courses.GetCourseDetail;
@@ -26,7 +27,7 @@ public class C_AssignCoachMVC : CoursesMVCControllerTests
     public async Task AssignCoach_POST_calls_the_service()
     {
         await controller.AssignCoach(TheCanonical.CourseId, TheCanonical.CoachId);
-        service.Verify(a => a.AssignCoach(TheCanonical.CourseId, TheCanonical.CoachId));
+        service.Verify(a => a.AssignCoach(It.IsAny<Actor>(), TheCanonical.CourseId, TheCanonical.CoachId));
     }
 
     [Fact]
@@ -42,7 +43,7 @@ public class C_AssignCoachMVC : CoursesMVCControllerTests
     public async Task AssignCoach_POST_Returns_View_On_Exception()
     {
         service.Setup(a => a.GetCourseDetail(TheCanonical.CourseId)).ReturnsAsync(TheCanonical.CourseDetail());
-        service.Setup(a => a.AssignCoach(It.IsAny<IdPrimitive>(), It.IsAny<IdPrimitive>())).ThrowsAsync(new CourseAlreadyConfirmed());
+        service.Setup(a => a.AssignCoach(It.IsAny<Actor>(), It.IsAny<IdPrimitive>(), It.IsAny<IdPrimitive>())).ThrowsAsync(new CourseAlreadyConfirmed());
         var result = await controller.AssignCoach(TheCanonical.CourseId);
         var view = Assert.IsType<ViewResult>(result);
         var model = Assert.IsType<AssignCoachViewModel>(view.Model);
@@ -53,7 +54,7 @@ public class C_AssignCoachMVC : CoursesMVCControllerTests
     [Fact]
     public async Task AssignCoach_POST_Returns_View_With_ModelError_On_Exception()
     {
-        service.Setup(a => a.AssignCoach(It.IsAny<IdPrimitive>(), It.IsAny<IdPrimitive>())).ThrowsAsync(new CourseNotYetConfirmed());
+        service.Setup(a => a.AssignCoach(It.IsAny<Actor>(), It.IsAny<IdPrimitive>(), It.IsAny<IdPrimitive>())).ThrowsAsync(new CourseNotYetConfirmed());
         var result = await controller.AssignCoach(TheCanonical.BadId, TheCanonical.CoachId);
         Assert.False(controller.ModelState.IsValid);
         Assert.Contains(controller.ModelState, kvp => kvp.Value!.Errors.Any(e => e.ErrorMessage == "Course not yet confirmed."));

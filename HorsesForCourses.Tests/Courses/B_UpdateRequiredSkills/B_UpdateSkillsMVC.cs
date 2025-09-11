@@ -1,3 +1,4 @@
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Core.Domain.Courses.InvalidationReasons;
 using HorsesForCourses.MVC.Models.Courses;
 using HorsesForCourses.Tests.Tools;
@@ -24,7 +25,7 @@ public class B_UpdateRequiredSkillsMVC : CoursesMVCControllerTests
     public async Task UpdateRequiredSkills_POST_calls_the_service()
     {
         await controller.UpdateRequiredSkills(TheCanonical.CourseId, TheCanonical.Skills);
-        service.Verify(a => a.UpdateRequiredSkills(TheCanonical.CourseId, TheCanonical.Skills));
+        service.Verify(a => a.UpdateRequiredSkills(It.IsAny<Actor>(), TheCanonical.CourseId, TheCanonical.Skills));
     }
 
     [Fact]
@@ -40,7 +41,7 @@ public class B_UpdateRequiredSkillsMVC : CoursesMVCControllerTests
     public async Task UpdateRequiredSkills_POST_Returns_View_On_Exception()
     {
         service.Setup(a => a.GetCourseDetail(TheCanonical.CourseId)).ReturnsAsync(TheCanonical.CourseDetail());
-        service.Setup(a => a.UpdateRequiredSkills(It.IsAny<IdPrimitive>(), It.IsAny<List<string>>()))
+        service.Setup(a => a.UpdateRequiredSkills(It.IsAny<Actor>(), It.IsAny<IdPrimitive>(), It.IsAny<List<string>>()))
             .ThrowsAsync(new CourseAlreadyHasSkill("one"));
         var result = await controller.UpdateRequiredSkills(TheCanonical.CourseId, ["one", "one"]);
         var view = Assert.IsType<ViewResult>(result);
@@ -52,7 +53,7 @@ public class B_UpdateRequiredSkillsMVC : CoursesMVCControllerTests
     [Fact]
     public async Task UpdateRequiredSkills_POST_Returns_View_With_ModelError_On_Exception()
     {
-        service.Setup(a => a.UpdateRequiredSkills(It.IsAny<IdPrimitive>(), It.IsAny<List<string>>()))
+        service.Setup(a => a.UpdateRequiredSkills(It.IsAny<Actor>(), It.IsAny<IdPrimitive>(), It.IsAny<List<string>>()))
             .ThrowsAsync(new CourseAlreadyHasSkill("one"));
         var result = await controller.UpdateRequiredSkills(TheCanonical.BadId, ["one", "one"]);
         Assert.False(controller.ModelState.IsValid);

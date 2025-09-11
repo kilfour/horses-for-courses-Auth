@@ -32,5 +32,5 @@ public class D_GetCoachDetailData : DatabaseTests
     [Fact]
     public async Task Unauthenticated_ShouldThrow()
         => await Assert.ThrowsAsync<UnauthorizedAccessException>(
-            () => new GetCoachDetailQuery(GetDbContext()).One(TheCanonical.UnauthenticatedActor(), IdAssignedByDb));
+            () => new GetCoachDetailQuery(GetDbContext()).One(TheCanonical.EmptyActor, IdAssignedByDb));
 }

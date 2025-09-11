@@ -10,7 +10,7 @@ public class C_ConfirmCourseService : CoursesServiceTests
     [Fact]
     public async Task ConfirmCourse_uses_the_query_object()
     {
-        await service.ConfirmCourse(TheCanonical.CourseId);
+        await service.ConfirmCourse(TheCanonical.EmptyActor, TheCanonical.CourseId);
         getCourseById.Verify(a => a.Load(TheCanonical.CourseId));
     }
 
@@ -19,7 +19,7 @@ public class C_ConfirmCourseService : CoursesServiceTests
     {
         courseSpy.UpdateTimeSlots(TheCanonical.TimeSlotsFullDayMonday(), a => a);
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
-        await service.ConfirmCourse(TheCanonical.CourseId);
+        await service.ConfirmCourse(TheCanonical.EmptyActor, TheCanonical.CourseId);
         Assert.True(courseSpy.IsConfirmed);
     }
 
@@ -28,7 +28,7 @@ public class C_ConfirmCourseService : CoursesServiceTests
     {
         courseSpy.UpdateTimeSlots(TheCanonical.TimeSlotsFullDayMonday(), a => a);
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
-        await service.ConfirmCourse(TheCanonical.CourseId);
+        await service.ConfirmCourse(TheCanonical.EmptyActor, TheCanonical.CourseId);
         supervisor.Verify(a => a.Ship());
     }
 
@@ -37,7 +37,7 @@ public class C_ConfirmCourseService : CoursesServiceTests
     {
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
         await Assert.ThrowsAnyAsync<DomainException>(
-            async () => await service.ConfirmCourse(TheCanonical.CourseId));
+            async () => await service.ConfirmCourse(TheCanonical.EmptyActor, TheCanonical.CourseId));
         supervisor.Verify(a => a.Ship(), Times.Never);
     }
 
@@ -46,14 +46,14 @@ public class C_ConfirmCourseService : CoursesServiceTests
     {
         courseSpy.UpdateTimeSlots(TheCanonical.TimeSlotsFullDayMonday(), a => a);
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
-        var success = await service.ConfirmCourse(TheCanonical.CourseId);
+        var success = await service.ConfirmCourse(TheCanonical.EmptyActor, TheCanonical.CourseId);
         Assert.True(success);
     }
 
     [Fact]
     public async Task ConfirmCourse_failure_returns_false()
     {
-        var success = await service.ConfirmCourse(TheCanonical.CourseId);
+        var success = await service.ConfirmCourse(TheCanonical.EmptyActor, TheCanonical.CourseId);
         Assert.False(success);
     }
 }

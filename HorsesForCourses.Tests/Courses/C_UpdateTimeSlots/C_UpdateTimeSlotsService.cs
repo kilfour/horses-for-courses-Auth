@@ -1,4 +1,5 @@
 using HorsesForCourses.Core.Domain;
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Tests.Tools;
 using HorsesForCourses.Tests.Tools.Courses;
 using Moq;
@@ -10,7 +11,7 @@ public class C_UpdateTimeSlotsService : CoursesServiceTests
     [Fact]
     public async Task UpdateTimeSlots_uses_the_query_object()
     {
-        await service.UpdateTimeSlots(TheCanonical.CourseId, TheCanonical.TimeSlotsFullDayMonday(), a => a);
+        await service.UpdateTimeSlots(It.IsAny<Actor>(), TheCanonical.CourseId, TheCanonical.TimeSlotsFullDayMonday(), a => a);
         getCourseById.Verify(a => a.Load(TheCanonical.CourseId));
     }
 
@@ -18,7 +19,7 @@ public class C_UpdateTimeSlotsService : CoursesServiceTests
     public async Task UpdateTimeSlots_calls_domain()
     {
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
-        await service.UpdateTimeSlots(TheCanonical.CourseId, TheCanonical.TimeSlotsFullDayMonday(), a => a);
+        await service.UpdateTimeSlots(It.IsAny<Actor>(), TheCanonical.CourseId, TheCanonical.TimeSlotsFullDayMonday(), a => a);
         Assert.True(courseSpy.TimeSlotsCalled);
         Assert.Equal(TheCanonical.TimeSlotsFullDayMondayExpected(), courseSpy.TimeSlotsSeen);
     }
@@ -27,7 +28,7 @@ public class C_UpdateTimeSlotsService : CoursesServiceTests
     public async Task UpdateTimeSlots_calls_supervisor_ship()
     {
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
-        await service.UpdateTimeSlots(TheCanonical.CourseId, TheCanonical.TimeSlotsFullDayMonday(), a => a);
+        await service.UpdateTimeSlots(It.IsAny<Actor>(), TheCanonical.CourseId, TheCanonical.TimeSlotsFullDayMonday(), a => a);
         supervisor.Verify(a => a.Ship());
     }
 
@@ -37,7 +38,7 @@ public class C_UpdateTimeSlotsService : CoursesServiceTests
         var invalidSlots = TheCanonical.TimeSlotsFullDayMonday().Concat(TheCanonical.TimeSlotsFullDayMonday());
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
         await Assert.ThrowsAnyAsync<DomainException>(
-            async () => await service.UpdateTimeSlots(TheCanonical.CourseId, invalidSlots, a => a));
+            async () => await service.UpdateTimeSlots(It.IsAny<Actor>(), TheCanonical.CourseId, invalidSlots, a => a));
         supervisor.Verify(a => a.Ship(), Times.Never);
     }
 
@@ -45,14 +46,14 @@ public class C_UpdateTimeSlotsService : CoursesServiceTests
     public async Task UpdateTimeSlots_success_returns_true()
     {
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
-        var success = await service.UpdateTimeSlots(TheCanonical.CourseId, TheCanonical.TimeSlotsFullDayMonday(), a => a);
+        var success = await service.UpdateTimeSlots(It.IsAny<Actor>(), TheCanonical.CourseId, TheCanonical.TimeSlotsFullDayMonday(), a => a);
         Assert.True(success);
     }
 
     [Fact]
     public async Task UpdateTimeSlots_failure_returns_false()
     {
-        var success = await service.UpdateTimeSlots(TheCanonical.CourseId, TheCanonical.TimeSlotsFullDayMonday(), a => a);
+        var success = await service.UpdateTimeSlots(It.IsAny<Actor>(), TheCanonical.CourseId, TheCanonical.TimeSlotsFullDayMonday(), a => a);
         Assert.False(success);
     }
 }

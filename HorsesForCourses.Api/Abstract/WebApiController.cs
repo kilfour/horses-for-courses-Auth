@@ -1,3 +1,4 @@
+using HorsesForCourses.Core.Domain.Accounts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HorsesForCourses.Api.Abstract;
@@ -14,6 +15,8 @@ public abstract class WebApiController : ControllerBase
         if (!flag) return NotFound();
         return NoContent();
     }
+
+    protected Actor GetActor() => new();
 }
 
 

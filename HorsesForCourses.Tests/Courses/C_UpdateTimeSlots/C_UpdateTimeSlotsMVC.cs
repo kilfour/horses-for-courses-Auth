@@ -1,3 +1,4 @@
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Core.Domain.Courses.InvalidationReasons;
 using HorsesForCourses.Core.Domain.Courses.TimeSlots;
 using HorsesForCourses.MVC.Models.Courses;
@@ -26,6 +27,7 @@ public class C_UpdateTimeSlotsMVC : CoursesMVCControllerTests
     {
         await controller.UpdateTimeSlots(TheCanonical.CourseId, TheCanonical.TimeSlotsFullDayMondayViewModel());
         service.Verify(a => a.UpdateTimeSlots(
+            It.IsAny<Actor>(),
             TheCanonical.CourseId,
             TheCanonical.TimeSlotsFullDayMondayViewModel(),
             It.IsAny<Func<TimeSlotViewModel, (CourseDay, int, int)>>()));
@@ -45,6 +47,7 @@ public class C_UpdateTimeSlotsMVC : CoursesMVCControllerTests
     {
         service.Setup(a => a.GetCourseDetail(TheCanonical.CourseId)).ReturnsAsync(TheCanonical.CourseDetail());
         service.Setup(a => a.UpdateTimeSlots(
+            It.IsAny<Actor>(),
             It.IsAny<IdPrimitive>(),
             It.IsAny<IEnumerable<TimeSlotViewModel>>(),
             It.IsAny<Func<TimeSlotViewModel, (CourseDay, int, int)>>()))
@@ -60,6 +63,7 @@ public class C_UpdateTimeSlotsMVC : CoursesMVCControllerTests
     public async Task UpdateTimeSlots_POST_Returns_View_With_ModelError_On_Exception()
     {
         service.Setup(a => a.UpdateTimeSlots(
+            It.IsAny<Actor>(),
             It.IsAny<IdPrimitive>(),
             It.IsAny<IEnumerable<TimeSlotViewModel>>(),
             It.IsAny<Func<TimeSlotViewModel, (CourseDay, int, int)>>()))

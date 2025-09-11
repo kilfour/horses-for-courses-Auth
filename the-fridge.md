@@ -4,11 +4,15 @@
   * Implement Login after Register.  
   * *Constantinize* "owned-coach"
   * AccountsService.Register(asCoach:true, ...): very brittle
+  * We need more `Act` methods in tests. The actor thing was painfull.
+  * There are a lot of `It.IsAny<Actor>()`'s around.
 
 ### Observations: 
-* really usefull test : 
+* really usefull test: 
   * `StringFields.AllStringsHaveLengthDefined()`
 * Ordering of Methods in Class definitions matters.
+  - AccountController: Putting the methods in order of the *Happy Path* flow is so much easier on the brain.
+* Expression of Intent leads to Late Binding. Example: InvalidationReasons
 
 ### Auth
 1. Lock Coaches, do it at service level
@@ -22,12 +26,11 @@ Domain makes final decision.
 *In domain method:* `Coach.UpdateSkills(...)`   
 *Use:* `actor.CanUpdateSkills()`. 
 
-2. Make it dynamic
+2. Make it Dynamic
 Flow:
 - Register: Create ApplicationUser In Db
 - Login: Get ApplicationUser => Actor => Claims
 - Any Request : Get Claims => Actor
-
 
 > Coach Skills kunnen enkel gewijzigd worden door de gebruiker die bij registratie deze specifieke coach heeft aangemaakt.  
 > Enkel *Admin Account* heeft toegang tot `Coaches\RegisterCoach`.  

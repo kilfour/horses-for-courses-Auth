@@ -42,5 +42,5 @@ public class E_UpdateSkillsDomain : CoachDomainTests
     [Fact]
     public void UpdateSkills_With_unauthenticated_ShouldThrow()
         => Assert.Throws<UnauthorizedAccessException>(
-            () => Entity.UpdateSkills(TheCanonical.UnauthenticatedActor(), TheCanonical.Skills));
+            () => Entity.UpdateSkills(TheCanonical.EmptyActor, TheCanonical.Skills));
 }

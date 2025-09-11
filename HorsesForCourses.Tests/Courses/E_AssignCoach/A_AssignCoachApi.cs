@@ -1,4 +1,5 @@
 using HorsesForCourses.Api.Courses;
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Tests.Tools;
 using HorsesForCourses.Tests.Tools.Courses;
 using Microsoft.AspNetCore.Mvc;
@@ -13,13 +14,13 @@ public class A_AssignCoachApi : CoursesApiControllerTests
     public async Task AssignCoach_uses_the_service()
     {
         await controller.AssignCoach(TheCanonical.CourseId, new AssignCoachRequest(TheCanonical.CoachId));
-        service.Verify(a => a.AssignCoach(TheCanonical.CourseId, TheCanonical.CoachId));
+        service.Verify(a => a.AssignCoach(It.IsAny<Actor>(), TheCanonical.CourseId, TheCanonical.CoachId));
     }
 
     [Fact]
     public async Task AssignCoach_NoContent()
     {
-        service.Setup(a => a.AssignCoach(TheCanonical.CourseId, TheCanonical.CoachId)).ReturnsAsync(true);
+        service.Setup(a => a.AssignCoach(It.IsAny<Actor>(), TheCanonical.CourseId, TheCanonical.CoachId)).ReturnsAsync(true);
         var response = await controller.AssignCoach(TheCanonical.CourseId, new AssignCoachRequest(TheCanonical.CoachId));
         Assert.IsType<NoContentResult>(response);
     }

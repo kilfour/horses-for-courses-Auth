@@ -1,3 +1,4 @@
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Tests.Tools;
 using HorsesForCourses.Tests.Tools.Courses;
 using Microsoft.AspNetCore.Mvc;
@@ -12,13 +13,13 @@ public class A_ConfirmCourseApi : CoursesApiControllerTests
     public async Task ConfirmCourse_uses_the_service()
     {
         await controller.ConfirmCourse(TheCanonical.CourseId);
-        service.Verify(a => a.ConfirmCourse(TheCanonical.CourseId));
+        service.Verify(a => a.ConfirmCourse(It.IsAny<Actor>(), TheCanonical.CourseId));
     }
 
     [Fact]
     public async Task ConfirmCourse_NoContent()
     {
-        service.Setup(a => a.ConfirmCourse(TheCanonical.CourseId)).ReturnsAsync(true);
+        service.Setup(a => a.ConfirmCourse(It.IsAny<Actor>(), TheCanonical.CourseId)).ReturnsAsync(true);
         var response = await controller.ConfirmCourse(TheCanonical.CourseId);
         Assert.IsType<NoContentResult>(response);
     }

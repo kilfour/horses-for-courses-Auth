@@ -1,4 +1,5 @@
 using HorsesForCourses.Api.Courses;
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Core.Domain.Courses.TimeSlots;
 using HorsesForCourses.Tests.Tools;
 using HorsesForCourses.Tests.Tools.Courses;
@@ -19,6 +20,7 @@ public class A_UpdateTimeSlotsApi : CoursesApiControllerTests
         var response = await controller.UpdateTimeSlots(TheCanonical.CourseId, request);
         service.Verify(a =>
             a.UpdateTimeSlots(
+                It.IsAny<Actor>(),
                 TheCanonical.CourseId,
                 request, It.IsAny<Func<TimeSlotRequest, (CourseDay, int, int)>>()));
     }
@@ -28,6 +30,7 @@ public class A_UpdateTimeSlotsApi : CoursesApiControllerTests
     {
         service.Setup(a =>
             a.UpdateTimeSlots(
+                It.IsAny<Actor>(),
                 TheCanonical.CourseId,
                 request, It.IsAny<Func<TimeSlotRequest, (CourseDay, int, int)>>())).ReturnsAsync(true);
         var response = await controller.UpdateTimeSlots(TheCanonical.CourseId, request);

@@ -1,3 +1,4 @@
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Core.Domain.Courses;
 using HorsesForCourses.Core.Domain.Courses.TimeSlots;
 using HorsesForCourses.Service.Courses.GetCourseDetail;
@@ -9,21 +10,22 @@ namespace HorsesForCourses.Service.Courses;
 
 public interface ICoursesService
 {
-    Task<IdPrimitive> CreateCourse(string name, DateOnly startDate, DateOnly endDate);
-    Task<bool> UpdateRequiredSkills(IdPrimitive id, IEnumerable<string> skills);
+    Task<IdPrimitive> CreateCourse(Actor actor, string name, DateOnly startDate, DateOnly endDate);
+    Task<bool> UpdateRequiredSkills(Actor actor, IdPrimitive id, IEnumerable<string> skills);
     Task<bool> UpdateTimeSlots<T>(
+        Actor actor,
         IdPrimitive id,
         IEnumerable<T> timeSlotInfo,
         Func<T, (CourseDay Day, int Start, int End)> getTimeSlot);
-    Task<bool> ConfirmCourse(IdPrimitive id);
-    Task<bool> AssignCoach(IdPrimitive courseId, IdPrimitive coachId);
+    Task<bool> ConfirmCourse(Actor actor, IdPrimitive id);
+    Task<bool> AssignCoach(Actor actor, IdPrimitive courseId, IdPrimitive coachId);
     Task<PagedResult<CourseSummary>> GetCourses(int page, int pageSize);
     Task<CourseDetail?> GetCourseDetail(IdPrimitive id);
 }
 
 public class CoursesService(CoursesRepository Repository) : ICoursesService
 {
-    public async Task<IdPrimitive> CreateCourse(string name, DateOnly start, DateOnly end)
+    public async Task<IdPrimitive> CreateCourse(Actor actor, string name, DateOnly start, DateOnly end)
     {
         var course = new Course(name, start, end);
         await Repository.Supervisor.Enlist(course);
@@ -31,7 +33,7 @@ public class CoursesService(CoursesRepository Repository) : ICoursesService
         return course.Id.Value;
     }
 
-    public async Task<bool> UpdateRequiredSkills(IdPrimitive id, IEnumerable<string> skills)
+    public async Task<bool> UpdateRequiredSkills(Actor actor, IdPrimitive id, IEnumerable<string> skills)
     {
         var course = await Repository.GetCourseById.Load(id);
         if (course == null) return false;
@@ -41,6 +43,7 @@ public class CoursesService(CoursesRepository Repository) : ICoursesService
     }
 
     public async Task<bool> UpdateTimeSlots<T>(
+        Actor actor,
         IdPrimitive id,
         IEnumerable<T> timeSlotInfo,
         Func<T, (CourseDay Day, int Start, int End)> getTimeSlot)
@@ -52,7 +55,7 @@ public class CoursesService(CoursesRepository Repository) : ICoursesService
         return true;
     }
 
-    public async Task<bool> ConfirmCourse(IdPrimitive id)
+    public async Task<bool> ConfirmCourse(Actor actor, IdPrimitive id)
     {
         var course = await Repository.GetCourseById.Load(id);
         if (course == null) return false;
@@ -61,7 +64,7 @@ public class CoursesService(CoursesRepository Repository) : ICoursesService
         return true;
     }
 
-    public async Task<bool> AssignCoach(IdPrimitive courseId, IdPrimitive coachId)
+    public async Task<bool> AssignCoach(Actor actor, IdPrimitive courseId, IdPrimitive coachId)
     {
         var course = await Repository.GetCourseById.Load(courseId);
         var coach = await Repository.GetCoachById.One(coachId);

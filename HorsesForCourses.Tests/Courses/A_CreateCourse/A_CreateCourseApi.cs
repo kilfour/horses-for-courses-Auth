@@ -1,7 +1,9 @@
 using HorsesForCourses.Api.Courses;
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Tests.Tools;
 using HorsesForCourses.Tests.Tools.Courses;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 
 namespace HorsesForCourses.Tests.Courses.A_CreateCourse;
 
@@ -23,7 +25,7 @@ public class A_CreateCourseApi : CoursesApiControllerTests
     public async Task CreateCourse_calls_the_service()
     {
         await Act();
-        service.Verify(a => a.CreateCourse(TheCanonical.CourseName, TheCanonical.CourseStart, TheCanonical.CourseEnd));
+        service.Verify(a => a.CreateCourse(It.IsAny<Actor>(), TheCanonical.CourseName, TheCanonical.CourseStart, TheCanonical.CourseEnd));
         service.VerifyNoOtherCalls();
     }
 
