@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using HorsesForCourses.Core.Abstractions;
 using HorsesForCourses.Core.Domain.Accounts.InvalidationReasons;
 using HorsesForCourses.Core.Domain.Coaches;
@@ -10,7 +11,7 @@ public class ApplicationUser : DomainEntity<ApplicationUser>
     public ApplicationUserEmail Email { get; init; } = ApplicationUserEmail.Empty;
     public string PasswordHash { get; init; } = string.Empty;
 
-    public HashSet<Permission> Permissions { get; } = [];
+    public string Role { get; init; } = string.Empty;
     public Id<Coach> OwnedCoach { get; } = Id<Coach>.Empty;
 
     protected ApplicationUser() { }
@@ -38,5 +39,8 @@ public class ApplicationUser : DomainEntity<ApplicationUser>
         if (!new Pbkdf2PasswordHasher().Verify(password, PasswordHash))
             throw new EmailOrPasswordAreInvalid();
     }
-}
 
+    public virtual Actor EnterScene()
+        => new Actor()
+            .Declare(ClaimTypes.Name, Email.Value); // ClaimTypes.Role, user.Role
+}

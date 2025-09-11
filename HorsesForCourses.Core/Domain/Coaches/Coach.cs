@@ -1,4 +1,5 @@
 using HorsesForCourses.Core.Abstractions;
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Core.Domain.Coaches.InvalidationReasons;
 using HorsesForCourses.Core.Domain.Coaches.Permissions;
 using HorsesForCourses.Core.Domain.Courses;
@@ -19,10 +20,16 @@ public class Coach : DomainEntity<Coach>
     private readonly List<Course> assignedCourses = [];
 
     private Coach() { /*** EFC Was Here ****/ }
-    public Coach(string name, string email)
+    protected Coach(string name, string email)
     {
         Name = new CoachName(name);
         Email = new CoachEmail(email);
+    }
+
+    public static Coach From(Actor actor, string name, string email)
+    {
+        actor.JustIs();
+        return new(name, email);
     }
 
     public virtual void UpdateSkills(IEnumerable<string> newSkills)

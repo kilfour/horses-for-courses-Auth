@@ -23,19 +23,25 @@ public class E_RegisterCoachDomain : CoachDomainTests
     [Fact]
     public void RegisterCoach_WithEmptyName_ShouldThrow()
         => Assert.Throws<CoachNameCanNotBeEmpty>(
-            () => new Coach(string.Empty, TheCanonical.CoachEmail));
+            () => Coach.From(TheCanonical.Actor(), string.Empty, TheCanonical.CoachEmail));
 
     [Fact]
     public void RegisterCoach_WithLongName_ShouldThrow()
         => Assert.Throws<CoachNameCanNotBeTooLong>(
-            () => new Coach(new string('-', 101), TheCanonical.CoachEmail));
+            () => Coach.From(TheCanonical.Actor(), new string('-', 101), TheCanonical.CoachEmail));
+
+    [Fact]
+    public void RegisterCoach_WithInvalidActor_ShouldThrow()
+        => Assert.Throws<CoachNameCanNotBeTooLong>(
+            () => Coach.From(TheCanonical.Actor(), new string('-', 101), TheCanonical.CoachEmail));
 
     [Fact]
     public void RegisterCoach_WithEmptyEmail_ShouldThrow()
-        => Assert.Throws<CoachEmailCanNotBeEmpty>(() => new Coach(TheCanonical.CoachName, string.Empty));
+        => Assert.Throws<CoachEmailCanNotBeEmpty>(
+            () => Coach.From(TheCanonical.Actor(), TheCanonical.CoachName, string.Empty));
 
     [Fact]
     public void RegisterCoach_WithLongEmail_ShouldThrow()
         => Assert.Throws<CoachEmailCanNotBeTooLong>(
-            () => new Coach(TheCanonical.CoachName, new string('-', 101)));
+            () => Coach.From(TheCanonical.Actor(), TheCanonical.CoachName, new string('-', 101)));
 }

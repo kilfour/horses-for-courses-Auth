@@ -1,4 +1,4 @@
-using HorsesForCourses.Service.Actors;
+using HorsesForCourses.Service.Accounts;
 using Microsoft.AspNetCore.Authentication;
 using Moq;
 

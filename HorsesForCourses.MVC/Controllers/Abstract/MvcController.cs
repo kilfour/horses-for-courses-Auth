@@ -1,18 +1,19 @@
 using HorsesForCourses.Core.Domain;
+using HorsesForCourses.Core.Domain.Accounts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HorsesForCourses.MVC.Controllers.Abstract;
 
 public abstract class MvcController : Controller
 {
-    protected Actor This(Func<Task> action) => new(this, action);
+    protected Initializer This(Func<Task> action) => new(this, action);
 
-    protected class Actor(Controller Controller, Func<Task> Action)
+    protected class Initializer(Controller Controller, Func<Task> Action)
     {
-        public Critic OnSuccess(Func<IActionResult> onSucces) => new(Controller, Action, onSucces);
+        public Finalizer OnSuccess(Func<IActionResult> onSucces) => new(Controller, Action, onSucces);
     }
 
-    protected class Critic(Controller Controller, Func<Task> Action, Func<IActionResult> OnSuccess)
+    protected class Finalizer(Controller Controller, Func<Task> Action, Func<IActionResult> OnSuccess)
     {
         public async Task<IActionResult> OnException(Func<IActionResult> onException)
             => await SafeTry(Task.FromResult(onException()));
@@ -40,6 +41,8 @@ public abstract class MvcController : Controller
         if (value == null) return NotFound();
         return View(func(value));
     }
+
+    protected Actor GetActor() => Actor.From(User?.Claims! ?? []);
 }
 
 

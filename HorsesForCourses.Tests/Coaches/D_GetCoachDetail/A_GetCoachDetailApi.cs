@@ -1,3 +1,4 @@
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Service.Coaches.GetCoachDetail;
 using HorsesForCourses.Tests.Tools;
 using HorsesForCourses.Tests.Tools.Coaches;
@@ -12,13 +13,13 @@ public class A_GetCoachDetailApi : CoachesApiControllerTests
     public async Task GetCoachDetail_uses_the_service()
     {
         var result = await controller.GetCoachDetail(TheCanonical.CoachId);
-        service.Verify(a => a.GetCoachDetail(TheCanonical.CoachId));
+        service.Verify(a => a.GetCoachDetail(It.IsAny<Actor>(), TheCanonical.CoachId));
     }
 
     [Fact]
     public async Task GetCoachDetail_Returns_Ok()
     {
-        service.Setup(a => a.GetCoachDetail(TheCanonical.CoachId)).ReturnsAsync(TheCanonical.CoachDetail());
+        service.Setup(a => a.GetCoachDetail(It.IsAny<Actor>(), TheCanonical.CoachId)).ReturnsAsync(TheCanonical.CoachDetail());
         var result = await controller.GetCoachDetail(TheCanonical.CoachId);
         Assert.NotNull(result);
         var okResult = Assert.IsType<OkObjectResult>(result);

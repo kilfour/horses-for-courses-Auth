@@ -1,3 +1,4 @@
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Core.Domain.Coaches;
 using HorsesForCourses.Service.Coaches.GetCoachById;
 using HorsesForCourses.Service.Coaches.GetCoachDetail;
@@ -10,10 +11,10 @@ namespace HorsesForCourses.Service.Coaches;
 
 public interface ICoachesService
 {
-    Task<IdPrimitive> RegisterCoach(string name, string email);
-    Task<bool> UpdateSkills(IdPrimitive id, IEnumerable<string> skills);
+    Task<IdPrimitive> RegisterCoach(Actor actor, string name, string email);
+    Task<bool> UpdateSkills(Actor actor, IdPrimitive id, IEnumerable<string> skills);
     Task<PagedResult<CoachSummary>> GetCoaches(int page, int pageSize);
-    Task<CoachDetail?> GetCoachDetail(IdPrimitive id);
+    Task<CoachDetail?> GetCoachDetail(Actor actor, IdPrimitive id);
 }
 
 public class CoachesService(
@@ -22,15 +23,15 @@ public class CoachesService(
     IGetCoachSummaries GetCoachSummaries,
     IGetCoachDetailQuery GetCoachDetailQuery) : ICoachesService
 {
-    public async Task<IdPrimitive> RegisterCoach(string name, string email)
+    public async Task<IdPrimitive> RegisterCoach(Actor actor, string name, string email)
     {
-        var coach = new Coach(name, email);
+        var coach = Coach.From(actor, name, email);
         await Supervisor.Enlist(coach);
         await Supervisor.Ship();
         return coach.Id.Value;
     }
 
-    public async Task<bool> UpdateSkills(IdPrimitive id, IEnumerable<string> skills)
+    public async Task<bool> UpdateSkills(Actor actor, IdPrimitive id, IEnumerable<string> skills)
     {
         var coach = await GetCoachById.One(id);
         if (coach == null) return false;
@@ -42,6 +43,6 @@ public class CoachesService(
     public async Task<PagedResult<CoachSummary>> GetCoaches(int page, int pageSize)
         => await GetCoachSummaries.Paged(new PageRequest(page, pageSize));
 
-    public async Task<CoachDetail?> GetCoachDetail(IdPrimitive id)
+    public async Task<CoachDetail?> GetCoachDetail(Actor actor, IdPrimitive id)
         => await GetCoachDetailQuery.One(id);
 }

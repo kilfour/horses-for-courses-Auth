@@ -1,7 +1,7 @@
 using HorsesForCourses.Service.Warehouse;
 using Moq;
-using HorsesForCourses.Service.Actors;
 using HorsesForCourses.Service.Accounts.GetApplicationUserByEmail;
+using HorsesForCourses.Service.Accounts;
 
 namespace HorsesForCourses.Tests.Tools.Accounts;
 

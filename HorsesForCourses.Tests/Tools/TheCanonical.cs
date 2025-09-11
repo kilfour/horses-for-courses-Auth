@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using HorsesForCourses.Api.Courses;
 using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Core.Domain.Coaches;
@@ -17,13 +18,15 @@ namespace HorsesForCourses.Tests.Tools;
 
 public static class TheCanonical
 {
+    public static Actor Actor()
+        => new Actor().Declare(ClaimTypes.Name, CoachName);
     public static readonly IdPrimitive BadId = -1;
 
     public static readonly IdPrimitive CoachId = 99;
     public const string CoachName = "The Coach";
     public const string CoachEmail = "coach@coaching.mcCoach";
     public static Coach Coach()
-        => new(CoachName, CoachEmail);
+        => HorsesForCourses.Core.Domain.Coaches.Coach.From(Actor(), CoachName, CoachEmail);
 
     public static PagedResult<CoachSummary> CoachSummaryList()
         => new([new CoachSummary(CoachId, CoachName, CoachEmail, 0)], 1, 1, 25);
@@ -62,7 +65,6 @@ public static class TheCanonical
 
     public static CourseDetail CourseDetail()
         => new() { Id = CourseId, Name = CourseName, Start = CourseStart, End = CourseEnd };
-
 
     public static ApplicationUser ApplicationUser()
        => HorsesForCourses.Core.Domain.Accounts.ApplicationUser.Create(

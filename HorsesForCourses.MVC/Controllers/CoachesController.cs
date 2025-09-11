@@ -1,4 +1,5 @@
 
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.MVC.Controllers.Abstract;
 using HorsesForCourses.MVC.Models.Coaches;
 using HorsesForCourses.Service.Coaches;
@@ -16,20 +17,20 @@ public class CoachesController(ICoachesService Service) : MvcController
 
     [HttpPost("RegisterCoach"), ValidateAntiForgeryToken]
     public async Task<IActionResult> RegisterCoach(string name, string email)
-        => await This(async () => await Service.RegisterCoach(name, email))
+        => await This(async () => await Service.RegisterCoach(GetActor(), name, email))
             .OnSuccess(() => RedirectToAction(nameof(Index)))
             .OnException(() => View(new RegisterCoachViewModel(name, email)));
 
     [HttpGet("UpdateSkills/{id}")]
     public async Task<IActionResult> UpdateSkills(IdPrimitive id)
-        => ViewOrNotFoundIfNull(await Service.GetCoachDetail(id), a => new UpdateSkillsViewModel(a!));
+        => ViewOrNotFoundIfNull(await Service.GetCoachDetail(GetActor(), id), a => new UpdateSkillsViewModel(a!));
 
     [HttpPost("UpdateSkills/{id}"), ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateSkills(IdPrimitive id, List<string> skills)
-        => await This(async () => await Service.UpdateSkills(id, skills))
+        => await This(async () => await Service.UpdateSkills(GetActor(), id, skills))
             .OnSuccess(() => RedirectToAction(nameof(Index)))
             .OnException(async () =>
-                ViewOrNotFoundIfNull(await Service.GetCoachDetail(id), a => new UpdateSkillsViewModel(a!)));
+                ViewOrNotFoundIfNull(await Service.GetCoachDetail(GetActor(), id), a => new UpdateSkillsViewModel(a!)));
 
     [HttpGet("Coaches/")]
     [AllowAnonymous]
@@ -38,7 +39,7 @@ public class CoachesController(ICoachesService Service) : MvcController
 
     [HttpGet("Coaches/{id}")]
     public async Task<IActionResult> GetCoachDetail(IdPrimitive id)
-        => ViewOrNotFoundIfNull(await Service.GetCoachDetail(id), a => a);
+        => ViewOrNotFoundIfNull(await Service.GetCoachDetail(GetActor(), id), a => a);
 }
 
 

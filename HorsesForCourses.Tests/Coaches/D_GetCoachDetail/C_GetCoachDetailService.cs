@@ -9,7 +9,7 @@ public class C_GetCoachDetailService : CoachesServiceTests
     [Fact]
     public async Task GetCoachDetail_uses_the_query_object()
     {
-        await service.GetCoachDetail(TheCanonical.CoachId);
+        await service.GetCoachDetail(TheCanonical.Actor(), TheCanonical.CoachId);
         getCoachDetail.Verify(a => a.One(TheCanonical.CoachId));
     }
 
@@ -18,7 +18,7 @@ public class C_GetCoachDetailService : CoachesServiceTests
     {
         var expected = TheCanonical.CoachDetail();
         getCoachDetail.Setup(a => a.One(TheCanonical.CoachId)).ReturnsAsync(expected);
-        var result = await service.GetCoachDetail(TheCanonical.CoachId);
+        var result = await service.GetCoachDetail(TheCanonical.Actor(), TheCanonical.CoachId);
         Assert.Equal(expected, result);
     }
 }

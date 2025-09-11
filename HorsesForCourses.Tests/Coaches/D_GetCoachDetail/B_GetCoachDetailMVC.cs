@@ -1,3 +1,4 @@
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Service.Coaches.GetCoachDetail;
 using HorsesForCourses.Tests.Tools;
 using HorsesForCourses.Tests.Tools.Coaches;
@@ -12,14 +13,14 @@ public class B_GetCoachDetailMVC : CoachesMVCControllerTests
     public async Task GetCoachDetail_uses_the_service()
     {
         var result = await controller.GetCoachDetail(TheCanonical.CoachId);
-        service.Verify(a => a.GetCoachDetail(TheCanonical.CoachId));
+        service.Verify(a => a.GetCoachDetail(It.IsAny<Actor>(), TheCanonical.CoachId));
     }
 
     [Fact]
     public async Task GetCoachDetail_Passes_The_Model_To_The_View()
     {
         var expected = TheCanonical.CoachDetail();
-        service.Setup(a => a.GetCoachDetail(TheCanonical.CoachId)).ReturnsAsync(expected);
+        service.Setup(a => a.GetCoachDetail(It.IsAny<Actor>(), TheCanonical.CoachId)).ReturnsAsync(expected);
 
         var result = await controller.GetCoachDetail(TheCanonical.CoachId);
 

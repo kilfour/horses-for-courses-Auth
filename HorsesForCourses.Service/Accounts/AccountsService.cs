@@ -4,7 +4,7 @@ using HorsesForCourses.Core.Domain.Accounts.InvalidationReasons;
 using HorsesForCourses.Service.Accounts.GetApplicationUserByEmail;
 using HorsesForCourses.Service.Warehouse;
 
-namespace HorsesForCourses.Service.Actors;
+namespace HorsesForCourses.Service.Accounts;
 
 public interface IAccountsService
 {

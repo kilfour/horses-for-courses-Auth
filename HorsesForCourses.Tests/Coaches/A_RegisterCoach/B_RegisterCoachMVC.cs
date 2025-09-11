@@ -1,3 +1,4 @@
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Core.Domain.Coaches.InvalidationReasons;
 using HorsesForCourses.MVC.Models.Coaches;
 using HorsesForCourses.Tests.Tools;
@@ -23,7 +24,7 @@ public class B_RegisterCoachMVC : CoachesMVCControllerTests
     public async Task RegisterCoach_POST_calls_the_service()
     {
         await controller.RegisterCoach(TheCanonical.CoachName, TheCanonical.CoachEmail);
-        service.Verify(a => a.RegisterCoach(TheCanonical.CoachName, TheCanonical.CoachEmail));
+        service.Verify(a => a.RegisterCoach(It.IsAny<Actor>(), TheCanonical.CoachName, TheCanonical.CoachEmail));
     }
 
     [Fact]
@@ -38,7 +39,7 @@ public class B_RegisterCoachMVC : CoachesMVCControllerTests
     public async Task RegisterCoach_POST_Returns_View_On_Exception()
     {
         service
-            .Setup(a => a.RegisterCoach(It.IsAny<string>(), It.IsAny<string>()))
+            .Setup(a => a.RegisterCoach(It.IsAny<Actor>(), It.IsAny<string>(), It.IsAny<string>()))
             .ThrowsAsync(new CoachNameCanNotBeEmpty());
         var result = await controller.RegisterCoach("", TheCanonical.CoachEmail);
         var view = Assert.IsType<ViewResult>(result);
@@ -51,7 +52,7 @@ public class B_RegisterCoachMVC : CoachesMVCControllerTests
     public async Task RegisterCoach_POST_Returns_View_With_ModelError_On_Exception()
     {
         service
-            .Setup(a => a.RegisterCoach(It.IsAny<string>(), It.IsAny<string>()))
+            .Setup(a => a.RegisterCoach(It.IsAny<Actor>(), It.IsAny<string>(), It.IsAny<string>()))
             .ThrowsAsync(new CoachNameCanNotBeEmpty());
         await controller.RegisterCoach("", TheCanonical.CoachEmail);
         Assert.False(controller.ModelState.IsValid);

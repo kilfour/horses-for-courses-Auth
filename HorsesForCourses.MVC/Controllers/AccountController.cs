@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using HorsesForCourses.MVC.Models.Account;
-using HorsesForCourses.Service.Actors;
 using HorsesForCourses.MVC.Controllers.Abstract;
+using HorsesForCourses.Service.Accounts;
 
 namespace HorsesForCourses.MVC.Controllers;
 

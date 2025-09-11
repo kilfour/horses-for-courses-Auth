@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using HorsesForCourses.Service.Coaches;
 using HorsesForCourses.Api.Abstract;
-using Microsoft.AspNetCore.Authorization;
+using HorsesForCourses.Core.Domain.Accounts;
 
 namespace HorsesForCourses.Api.Coaches;
 
@@ -11,11 +11,11 @@ public class CoachesController(ICoachesService Service) : WebApiController
 {
     [HttpPost]
     public async Task<IActionResult> RegisterCoach(RegisterCoachRequest request)
-        => Ok(await Service.RegisterCoach(request.Name, request.Email));
+        => Ok(await Service.RegisterCoach(Actor.From([]), request.Name, request.Email));
 
     [HttpPost("{id}/skills")]
     public async Task<IActionResult> UpdateSkills(IdPrimitive id, UpdateSkillsRequest request)
-        => NoContentNotFoundIfFalse(await Service.UpdateSkills(id, request.Skills));
+        => NoContentNotFoundIfFalse(await Service.UpdateSkills(Actor.From([]), id, request.Skills));
 
     [HttpGet]
     public async Task<IActionResult> GetCoaches(int page = 1, int pageSize = 25)
@@ -23,5 +23,5 @@ public class CoachesController(ICoachesService Service) : WebApiController
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCoachDetail(IdPrimitive id)
-        => OkNotFoundIfNull(await Service.GetCoachDetail(id));
+        => OkNotFoundIfNull(await Service.GetCoachDetail(Actor.From([]), id));
 }
