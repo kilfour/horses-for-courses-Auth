@@ -19,6 +19,8 @@ public class StringFields
                 .Where(a => a.Contains("nvarchar"));
         foreach (var stringSql in sql)
         {
+            if (stringSql.Contains("[PasswordHash]"))
+                continue;
             Assert.Contains("nvarchar(100)", stringSql);
         }
 

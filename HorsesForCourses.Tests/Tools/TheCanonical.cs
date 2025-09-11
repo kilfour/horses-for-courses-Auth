@@ -1,4 +1,6 @@
 using HorsesForCourses.Api.Courses;
+using HorsesForCourses.Core.Domain.Accounts;
+using HorsesForCourses.Core.Domain.Actors;
 using HorsesForCourses.Core.Domain.Coaches;
 using HorsesForCourses.Core.Domain.Courses;
 using HorsesForCourses.Core.Domain.Courses.TimeSlots;
@@ -9,6 +11,7 @@ using HorsesForCourses.Service.Coaches.GetCoaches;
 using HorsesForCourses.Service.Courses.GetCourseDetail;
 using HorsesForCourses.Service.Courses.GetCourses;
 using HorsesForCourses.Service.Warehouse.Paging;
+using Microsoft.AspNetCore.Identity;
 using WibblyWobbly;
 using static HorsesForCourses.Service.Courses.GetCourseDetail.CourseDetail;
 
@@ -62,6 +65,10 @@ public static class TheCanonical
     public static CourseDetail CourseDetail()
         => new() { Id = CourseId, Name = CourseName, Start = CourseStart, End = CourseEnd };
 
+
+    public static ApplicationUser ApplicationUser()
+       => HorsesForCourses.Core.Domain.Accounts.ApplicationUser.Create(
+            CoachName, CoachEmail, Password, Password, new Pbkdf2PasswordHasher());
 
     public const string Password = "pass123";
 }
