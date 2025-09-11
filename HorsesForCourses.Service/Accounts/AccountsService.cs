@@ -26,6 +26,7 @@ public class AccountsService : IAccountsService
 
     public Task<bool> Register(string name, string email, string pass, string passConfirm, bool asCoach)
     {
+        // 
         supervisor.Enlist(ApplicationUser.Create(name, email, pass, passConfirm));
         supervisor.Ship();
         return Task.FromResult(true);

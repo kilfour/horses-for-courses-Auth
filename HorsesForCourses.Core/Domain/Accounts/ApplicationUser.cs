@@ -42,5 +42,7 @@ public class ApplicationUser : DomainEntity<ApplicationUser>
 
     public virtual Actor EnterScene()
         => new Actor()
-            .Declare(ClaimTypes.Name, Email.Value); // ClaimTypes.Role, user.Role
+            .Declare(ClaimTypes.Name, Email.Value)
+            .Declare(ClaimTypes.Role, Role)
+            .Declare("owned-coach", OwnedCoach.Value.ToString());
 }

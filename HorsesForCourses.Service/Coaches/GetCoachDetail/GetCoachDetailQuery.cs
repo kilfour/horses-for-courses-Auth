@@ -17,7 +17,7 @@ public class GetCoachDetailQuery(AppDbContext dbContext) : IGetCoachDetailQuery
 
     public async Task<CoachDetail?> One(Actor actor, IdPrimitive id)
     {
-        actor.JustIs();
+        actor.IsAuthenticated();
         var coachId = Id<Coach>.From(id);
         return await dbContext.Coaches
             .AsNoTracking()

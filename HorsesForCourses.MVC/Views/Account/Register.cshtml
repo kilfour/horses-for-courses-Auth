@@ -31,6 +31,12 @@
         <span asp-validation-for="PassConfirm" class="text-danger"></span>
     </div>
 
+    <div class="mb-3 form-check">
+        <input asp-for="AsCoach" class="form-check-input" type="checkbox" />
+        <label asp-for="AsCoach" class="form-check-label"></label>
+        <span asp-validation-for="AsCoach" class="text-danger"></span>
+    </div>
+
     <button type="submit" class="btn btn-primary">Create account</button>
 </form>
 

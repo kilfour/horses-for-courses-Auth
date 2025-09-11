@@ -19,6 +19,23 @@ public class AccountController : MvcController
     }
 
     [HttpGet]
+    public async Task<IActionResult> Register()
+    {
+        return await Task.FromResult(View(new RegisterAccountViewModel()));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Register(RegisterAccountViewModel viewModel)
+        => await This(async () => await accountService.Register(
+                viewModel.Name,
+                viewModel.Email,
+                viewModel.Pass,
+                viewModel.PassConfirm,
+                viewModel.AsCoach))
+            .OnSuccess(() => RedirectToAction(nameof(Index), "Home"))
+            .OnException(() => View(viewModel));
+
+    [HttpGet]
     public async Task<IActionResult> Login()
     {
         return await Task.FromResult(View(new LoginViewModel()));
@@ -37,23 +54,6 @@ public class AccountController : MvcController
             .OnException(() => View(new LoginViewModel { Email = email }));
 
     }
-
-    [HttpGet]
-    public async Task<IActionResult> Register()
-    {
-        return await Task.FromResult(View(new RegisterAccountViewModel()));
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Register(RegisterAccountViewModel viewModel)
-        => await This(async () => await accountService.Register(
-                viewModel.Name,
-                viewModel.Email,
-                viewModel.Pass,
-                viewModel.PassConfirm,
-                viewModel.AsCoach))
-            .OnSuccess(() => RedirectToAction(nameof(Index), "Home"))
-            .OnException(() => View(viewModel));
 
     [HttpPost]
     public async Task<IActionResult> Logout()

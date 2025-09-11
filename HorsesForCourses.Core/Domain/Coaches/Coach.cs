@@ -28,13 +28,13 @@ public class Coach : DomainEntity<Coach>
 
     public static Coach From(Actor actor, string name, string email)
     {
-        actor.JustIs();
+        actor.IsAuthenticated();
         return new(name, email);
     }
 
     public virtual void UpdateSkills(Actor actor, IEnumerable<string> newSkills)
     {
-        actor.JustIs();
+        actor.IsAuthenticated();
         //OnlyActorsWhoRegisteredAsCoachCanEdit();
         NotAllowedWhenThereAreDuplicateSkills();
         OverwriteSkills();
