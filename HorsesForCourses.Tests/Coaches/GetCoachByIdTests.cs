@@ -11,7 +11,7 @@ public class GetCoachByIdTests : DatabaseTests
     private IdPrimitive IdAssignedByDb;
 
     private async Task<Coach?> Act()
-        => await new GetCoachById(GetDbContext()).Load(IdAssignedByDb);
+        => await new GetCoachById(GetDbContext()).One(IdAssignedByDb);
 
     [Fact]
     public async Task LoadIt()

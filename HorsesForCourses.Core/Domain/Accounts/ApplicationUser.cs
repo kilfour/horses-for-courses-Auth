@@ -13,7 +13,7 @@ public class ApplicationUser : DomainEntity<ApplicationUser>
     public HashSet<Permission> Permissions { get; } = [];
     public Id<Coach> OwnedCoach { get; } = Id<Coach>.Empty;
 
-    private ApplicationUser() { }
+    protected ApplicationUser() { }
 
     private ApplicationUser(string name, string email, string passwordHash)
     {
@@ -31,6 +31,12 @@ public class ApplicationUser : DomainEntity<ApplicationUser>
             throw new PasswordCanNotBeEmpty();
 
         return new ApplicationUser(name, email, new Pbkdf2PasswordHasher().Hash(pass));
+    }
+
+    public virtual void CheckPassword(string password)
+    {
+        if (!new Pbkdf2PasswordHasher().Verify(password, PasswordHash))
+            throw new EmailOrPasswordAreInvalid();
     }
 }
 

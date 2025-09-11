@@ -11,13 +11,13 @@ public class C_UpdateSkillsService : CoachesServiceTests
     public async Task UpdateSkills_uses_the_query_object()
     {
         var response = await service.UpdateSkills(TheCanonical.CoachId, TheCanonical.Skills);
-        getCoachById.Verify(a => a.Load(TheCanonical.CoachId));
+        getCoachById.Verify(a => a.One(TheCanonical.CoachId));
     }
 
     [Fact]
     public async Task UpdateSkills_calls_update_skills()
     {
-        getCoachById.Setup(a => a.Load(TheCanonical.CoachId)).ReturnsAsync(spy);
+        getCoachById.Setup(a => a.One(TheCanonical.CoachId)).ReturnsAsync(spy);
         await service.UpdateSkills(TheCanonical.CoachId, TheCanonical.Skills);
         Assert.True(spy.UpdateSkillsCalled);
         Assert.Equal(TheCanonical.Skills, spy.UpdateSkillsSeen);
@@ -26,7 +26,7 @@ public class C_UpdateSkillsService : CoachesServiceTests
     [Fact]
     public async Task UpdateSkills_calls_supervisor_ship()
     {
-        getCoachById.Setup(a => a.Load(TheCanonical.CoachId)).ReturnsAsync(spy);
+        getCoachById.Setup(a => a.One(TheCanonical.CoachId)).ReturnsAsync(spy);
         await service.UpdateSkills(TheCanonical.CoachId, TheCanonical.Skills);
         supervisor.Verify(a => a.Ship());
     }
@@ -34,7 +34,7 @@ public class C_UpdateSkillsService : CoachesServiceTests
     [Fact]
     public async Task UpdateSkills_Does_Not_Ship_On_Exception()
     {
-        getCoachById.Setup(a => a.Load(TheCanonical.CoachId)).ReturnsAsync(spy);
+        getCoachById.Setup(a => a.One(TheCanonical.CoachId)).ReturnsAsync(spy);
         await Assert.ThrowsAnyAsync<DomainException>(
             async () => await service.UpdateSkills(TheCanonical.CoachId, ["a", "a"]));
         supervisor.Verify(a => a.Ship(), Times.Never);
@@ -43,7 +43,7 @@ public class C_UpdateSkillsService : CoachesServiceTests
     [Fact]
     public async Task UpdateSkills_success_returns_true()
     {
-        getCoachById.Setup(a => a.Load(TheCanonical.CoachId)).ReturnsAsync(spy);
+        getCoachById.Setup(a => a.One(TheCanonical.CoachId)).ReturnsAsync(spy);
         var success = await service.UpdateSkills(TheCanonical.CoachId, TheCanonical.Skills);
         Assert.True(success);
     }

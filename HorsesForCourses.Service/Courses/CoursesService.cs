@@ -64,7 +64,7 @@ public class CoursesService(CoursesRepository Repository) : ICoursesService
     public async Task<bool> AssignCoach(IdPrimitive courseId, IdPrimitive coachId)
     {
         var course = await Repository.GetCourseById.Load(courseId);
-        var coach = await Repository.GetCoachById.Load(coachId);
+        var coach = await Repository.GetCoachById.One(coachId);
         if (course == null || coach == null) return false;
         course.AssignCoach(coach);
         await Repository.Supervisor.Ship();

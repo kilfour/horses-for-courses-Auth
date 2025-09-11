@@ -6,7 +6,7 @@ namespace HorsesForCourses.Service.Coaches.GetCoachById;
 
 public interface IGetCoachById
 {
-    Task<Coach?> Load(IdPrimitive id);
+    Task<Coach?> One(IdPrimitive id);
 }
 
 public class GetCoachById : IGetCoachById
@@ -18,7 +18,7 @@ public class GetCoachById : IGetCoachById
         this.dbContext = dbContext;
     }
 
-    public async Task<Coach?> Load(IdPrimitive id)
+    public async Task<Coach?> One(IdPrimitive id)
     {
         return await dbContext.FindAsync<Coach>(Id<Coach>.From(id));
     }

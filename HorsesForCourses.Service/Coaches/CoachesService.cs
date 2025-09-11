@@ -32,7 +32,7 @@ public class CoachesService(
 
     public async Task<bool> UpdateSkills(IdPrimitive id, IEnumerable<string> skills)
     {
-        var coach = await GetCoachById.Load(id);
+        var coach = await GetCoachById.One(id);
         if (coach == null) return false;
         coach.UpdateSkills(skills);
         await Supervisor.Ship();

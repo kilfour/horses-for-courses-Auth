@@ -11,7 +11,7 @@ public class C_AssignCoachService : CoursesServiceTests
 
     private void SetUpMocks()
     {
-        getCoachById.Setup(a => a.Load(TheCanonical.CoachId)).ReturnsAsync(TheCanonical.Coach());
+        getCoachById.Setup(a => a.One(TheCanonical.CoachId)).ReturnsAsync(TheCanonical.Coach());
         courseSpy.UpdateTimeSlots(TheCanonical.TimeSlotsFullDayMonday(), a => a);
         courseSpy.Confirm();
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
@@ -22,7 +22,7 @@ public class C_AssignCoachService : CoursesServiceTests
     {
         await service.AssignCoach(TheCanonical.CourseId, TheCanonical.CoachId);
         getCourseById.Verify(a => a.Load(TheCanonical.CourseId));
-        getCoachById.Verify(a => a.Load(TheCanonical.CoachId));
+        getCoachById.Verify(a => a.One(TheCanonical.CoachId));
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public class C_AssignCoachService : CoursesServiceTests
     [Fact]
     public async Task AssignCoach_Returns_false_If_No_Course()
     {
-        getCoachById.Setup(a => a.Load(TheCanonical.CoachId)).ReturnsAsync(TheCanonical.Coach());
+        getCoachById.Setup(a => a.One(TheCanonical.CoachId)).ReturnsAsync(TheCanonical.Coach());
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync((Course)null!);
         Assert.False(await service.AssignCoach(TheCanonical.BadId, TheCanonical.CoachId));
     }
@@ -60,7 +60,7 @@ public class C_AssignCoachService : CoursesServiceTests
     [Fact]
     public async Task AssignCoach_Returns_false_If_No_Coach()
     {
-        getCoachById.Setup(a => a.Load(TheCanonical.CoachId)).ReturnsAsync((Coach)null!);
+        getCoachById.Setup(a => a.One(TheCanonical.CoachId)).ReturnsAsync((Coach)null!);
         courseSpy.UpdateTimeSlots(TheCanonical.TimeSlotsFullDayMonday(), a => a);
         courseSpy.Confirm();
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);

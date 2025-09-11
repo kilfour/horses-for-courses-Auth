@@ -1,30 +1,48 @@
 using HorsesForCourses.Core.Domain;
 using HorsesForCourses.Core.Domain.Accounts;
+using HorsesForCourses.Core.Domain.Accounts.InvalidationReasons;
 using HorsesForCourses.Core.Domain.Coaches;
 using HorsesForCourses.Tests.Tools;
 using HorsesForCourses.Tests.Tools.Accounts;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace HorsesForCourses.Tests.Accounts.B_Login;
 
 public class C_LoginService : AccountsServiceTests
 {
-    // [Fact]
-    // public async Task Login_uses_the_query_object()
-    // {
-    //     await service.Login(TheCanonical.CoachName, TheCanonical.Password);
-    //     supervisor.Verify(a => a.Enlist(
-    //         It.Is<ApplicationUser>(a =>
-    //             a.Name.Value == TheCanonical.CoachName &&
-    //             a.Email.Value == TheCanonical.CoachEmail)));
-    //     supervisor.Verify(a => a.Ship());
-    // }
+    [Fact]
+    public async Task Login_uses_the_query_object()
+    {
+        getApplicationUserByEmail.Setup(a => a.One(TheCanonical.CoachEmail)).ReturnsAsync(TheCanonical.ApplicationUser());
+        await service.Login(TheCanonical.CoachEmail, TheCanonical.Password);
+        getApplicationUserByEmail.Verify(a => a.One(TheCanonical.CoachEmail));
+    }
 
-    // [Fact]
-    // public async Task Login_Does_Not_Ship_On_Exception()
-    // {
-    //     await Assert.ThrowsAnyAsync<DomainException>(async () =>
-    //         await service.Login(TheCanonical.CoachName, TheCanonical.CoachEmail, TheCanonical.Password, "PLOEF", false));
-    //     supervisor.Verify(a => a.Ship(), Times.Never);
-    // }
+    [Fact]
+    public async Task Login_throws_when_query_returns_null()
+    {
+        getApplicationUserByEmail.Setup(a => a.One(TheCanonical.CoachEmail)).ReturnsAsync((ApplicationUser)null!);
+        var ex = await Assert.ThrowsAsync<EmailOrPasswordAreInvalid>(() => service.Login(TheCanonical.CoachEmail, TheCanonical.Password));
+    }
+
+    [Fact]
+    public async Task Login_calls_the_domain()
+    {
+        var spy = new ApplicationUserSpy();
+        getApplicationUserByEmail
+            .Setup(a => a.One(TheCanonical.CoachEmail))
+            .ReturnsAsync(spy);
+        await service.Login(TheCanonical.CoachEmail, TheCanonical.Password);
+        Assert.True(spy.CheckPasswordCalled);
+        Assert.Equal(TheCanonical.Password, spy.CheckPasswordSeen);
+    }
+
+    [Fact]
+    public async Task Login_throws_when_hash_does_not_match_the_application_user_one()
+    {
+        getApplicationUserByEmail.Setup(a => a.One(TheCanonical.CoachEmail)).ReturnsAsync((ApplicationUser)null!);
+        var ex = await Assert.ThrowsAsync<EmailOrPasswordAreInvalid>(() => service.Login(TheCanonical.CoachEmail, TheCanonical.Password));
+
+    }
 }
