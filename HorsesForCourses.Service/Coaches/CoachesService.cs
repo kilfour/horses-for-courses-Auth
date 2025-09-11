@@ -35,7 +35,7 @@ public class CoachesService(
     {
         var coach = await GetCoachById.One(id);
         if (coach == null) return false;
-        coach.UpdateSkills(skills);
+        coach.UpdateSkills(actor, skills);
         await Supervisor.Ship();
         return true;
     }
@@ -44,5 +44,5 @@ public class CoachesService(
         => await GetCoachSummaries.Paged(new PageRequest(page, pageSize));
 
     public async Task<CoachDetail?> GetCoachDetail(Actor actor, IdPrimitive id)
-        => await GetCoachDetailQuery.One(id);
+        => await GetCoachDetailQuery.One(actor, id);
 }

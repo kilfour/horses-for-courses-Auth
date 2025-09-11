@@ -1,3 +1,4 @@
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Tests.Tools;
 using HorsesForCourses.Tests.Tools.Coaches;
 using Moq;
@@ -9,16 +10,16 @@ public class C_GetCoachDetailService : CoachesServiceTests
     [Fact]
     public async Task GetCoachDetail_uses_the_query_object()
     {
-        await service.GetCoachDetail(TheCanonical.Actor(), TheCanonical.CoachId);
-        getCoachDetail.Verify(a => a.One(TheCanonical.CoachId));
+        await service.GetCoachDetail(TheCanonical.AuthenticatedActor(), TheCanonical.CoachId);
+        getCoachDetail.Verify(a => a.One(It.IsAny<Actor>(), TheCanonical.CoachId));
     }
 
     [Fact]
     public async Task GetCoachDetail_success_returns_coach_detail()
     {
         var expected = TheCanonical.CoachDetail();
-        getCoachDetail.Setup(a => a.One(TheCanonical.CoachId)).ReturnsAsync(expected);
-        var result = await service.GetCoachDetail(TheCanonical.Actor(), TheCanonical.CoachId);
+        getCoachDetail.Setup(a => a.One(It.IsAny<Actor>(), TheCanonical.CoachId)).ReturnsAsync(expected);
+        var result = await service.GetCoachDetail(TheCanonical.AuthenticatedActor(), TheCanonical.CoachId);
         Assert.Equal(expected, result);
     }
 }

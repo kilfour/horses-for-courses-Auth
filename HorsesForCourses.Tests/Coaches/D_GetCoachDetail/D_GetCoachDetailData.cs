@@ -10,7 +10,7 @@ public class D_GetCoachDetailData : DatabaseTests
     private IdPrimitive IdAssignedByDb;
 
     private async Task<CoachDetail?> Act()
-        => await new GetCoachDetailQuery(GetDbContext()).One(IdAssignedByDb);
+        => await new GetCoachDetailQuery(GetDbContext()).One(TheCanonical.AuthenticatedActor(), IdAssignedByDb);
 
     [Fact]
     public async Task With_Coach()
@@ -28,4 +28,9 @@ public class D_GetCoachDetailData : DatabaseTests
     [Fact]
     public async Task NotThere_Returns_Null()
         => Assert.Null(await Act());
+
+    [Fact]
+    public async Task Unauthenticated_ShouldThrow()
+        => await Assert.ThrowsAsync<UnauthorizedAccessException>(
+            () => new GetCoachDetailQuery(GetDbContext()).One(TheCanonical.UnauthenticatedActor(), IdAssignedByDb));
 }

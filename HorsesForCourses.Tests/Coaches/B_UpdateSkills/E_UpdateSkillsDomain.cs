@@ -21,7 +21,7 @@ public class E_UpdateSkillsDomain : CoachDomainTests
     [Fact]
     public void UpdateSkills_WithValidData_ShouldSucceed()
     {
-        Entity.UpdateSkills(TheCanonical.Skills);
+        Entity.UpdateSkills(TheCanonical.AuthenticatedActor(), TheCanonical.Skills);
         Assert.Equal(TheCanonical.HardSkills.OrderBy(a => a.Value), Entity.Skills.OrderBy(a => a.Value));
     }
 
@@ -29,13 +29,18 @@ public class E_UpdateSkillsDomain : CoachDomainTests
     public void UpdateSkills_WithInValidSkill_Throws()
     {
         var skills = new List<string> { "" };
-        Assert.Throws<SkillValueCanNotBeEmpty>(() => Entity.UpdateSkills(skills));
+        Assert.Throws<SkillValueCanNotBeEmpty>(() => Entity.UpdateSkills(TheCanonical.AuthenticatedActor(), skills));
     }
 
     [Fact]
     public void UpdateSkills_With_Duplicates_Throws()
     {
         var skills = new List<string> { "a", "a" };
-        Assert.Throws<CoachAlreadyHasSkill>(() => Entity.UpdateSkills(skills));
+        Assert.Throws<CoachAlreadyHasSkill>(() => Entity.UpdateSkills(TheCanonical.AuthenticatedActor(), skills));
     }
+
+    [Fact]
+    public void UpdateSkills_With_unauthenticated_ShouldThrow()
+        => Assert.Throws<UnauthorizedAccessException>(
+            () => Entity.UpdateSkills(TheCanonical.UnauthenticatedActor(), TheCanonical.Skills));
 }

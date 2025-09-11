@@ -18,15 +18,17 @@ namespace HorsesForCourses.Tests.Tools;
 
 public static class TheCanonical
 {
-    public static Actor Actor()
+    public static Actor AuthenticatedActor()
         => new Actor().Declare(ClaimTypes.Name, CoachName);
+    public static Actor UnauthenticatedActor() => new();
+
     public static readonly IdPrimitive BadId = -1;
 
     public static readonly IdPrimitive CoachId = 99;
     public const string CoachName = "The Coach";
     public const string CoachEmail = "coach@coaching.mcCoach";
     public static Coach Coach()
-        => HorsesForCourses.Core.Domain.Coaches.Coach.From(Actor(), CoachName, CoachEmail);
+        => HorsesForCourses.Core.Domain.Coaches.Coach.From(AuthenticatedActor(), CoachName, CoachEmail);
 
     public static PagedResult<CoachSummary> CoachSummaryList()
         => new([new CoachSummary(CoachId, CoachName, CoachEmail, 0)], 1, 1, 25);

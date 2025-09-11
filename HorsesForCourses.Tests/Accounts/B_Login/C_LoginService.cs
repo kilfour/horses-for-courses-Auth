@@ -38,6 +38,8 @@ public class C_LoginService : AccountsServiceTests
         Assert.Equal(TheCanonical.Password, spy.CheckPasswordSeen);
     }
 
+    // TODO : Login calls the domain again to create an actor and pass on the Claims
+
     [Fact]
     public async Task Login_throws_when_hash_does_not_match_the_application_user_one()
     {

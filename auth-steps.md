@@ -5,3 +5,5 @@ Actor.From(User.Claims) in controller, service passes actor down to domain
 in method f.i. `Coach.UpdateSkills(...)`: `actor.CanUpdateSkills()`. 
 
 really usefull test : `StringFields.AllStringsHaveLengthDefined()`
+
+Todo : HorsesForCourses.Tests.Accounts.B_Login.C_LoginService

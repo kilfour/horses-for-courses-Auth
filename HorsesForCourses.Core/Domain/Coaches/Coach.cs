@@ -32,8 +32,9 @@ public class Coach : DomainEntity<Coach>
         return new(name, email);
     }
 
-    public virtual void UpdateSkills(IEnumerable<string> newSkills)
+    public virtual void UpdateSkills(Actor actor, IEnumerable<string> newSkills)
     {
+        actor.JustIs();
         //OnlyActorsWhoRegisteredAsCoachCanEdit();
         NotAllowedWhenThereAreDuplicateSkills();
         OverwriteSkills();

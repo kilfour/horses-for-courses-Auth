@@ -1,4 +1,5 @@
 using HorsesForCourses.Core.Abstractions;
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Core.Domain.Coaches;
 using HorsesForCourses.Service.Warehouse;
 using Microsoft.EntityFrameworkCore;
@@ -7,15 +8,16 @@ namespace HorsesForCourses.Service.Coaches.GetCoachDetail;
 
 public interface IGetCoachDetailQuery
 {
-    Task<CoachDetail?> One(IdPrimitive id);
+    Task<CoachDetail?> One(Actor actor, IdPrimitive id);
 }
 
 public class GetCoachDetailQuery(AppDbContext dbContext) : IGetCoachDetailQuery
 {
     private readonly AppDbContext dbContext = dbContext;
 
-    public async Task<CoachDetail?> One(IdPrimitive id)
+    public async Task<CoachDetail?> One(Actor actor, IdPrimitive id)
     {
+        actor.JustIs();
         var coachId = Id<Coach>.From(id);
         return await dbContext.Coaches
             .AsNoTracking()

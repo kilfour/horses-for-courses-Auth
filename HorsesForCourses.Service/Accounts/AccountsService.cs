@@ -37,6 +37,6 @@ public class AccountsService : IAccountsService
         if (applicationUser == null)
             throw new EmailOrPasswordAreInvalid();
         applicationUser.CheckPassword(password);
-        return await Task.FromResult(new List<Claim>());
+        return await Task.FromResult(applicationUser.EnterScene().ClaimIt());
     }
 }

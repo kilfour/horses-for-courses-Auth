@@ -20,7 +20,7 @@ public class D_UpdateSkillsData : DatabaseTests
     private void Act()
     {
         var context = GetDbContext();
-        Reload(context).UpdateSkills(TheCanonical.Skills);
+        Reload(context).UpdateSkills(TheCanonical.AuthenticatedActor(), TheCanonical.Skills);
         context.SaveChanges();
     }
 
