@@ -18,7 +18,7 @@ public class C_UpdateRequiredSkillsService : CoursesServiceTests
     public async Task UpdateRequiredSkills_calls_domain()
     {
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
-        await service.UpdateRequiredSkills(TheCanonical.EmptyActor, TheCanonical.CourseId, TheCanonical.Skills);
+        await service.UpdateRequiredSkills(TheCanonical.AdminActor(), TheCanonical.CourseId, TheCanonical.Skills);
         Assert.True(courseSpy.RequiredSkillsCalled);
         Assert.Equal(TheCanonical.Skills, courseSpy.RequiredSkillsSeen);
     }
@@ -27,7 +27,7 @@ public class C_UpdateRequiredSkillsService : CoursesServiceTests
     public async Task UpdateRequiredSkills_calls_supervisor_ship()
     {
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
-        await service.UpdateRequiredSkills(TheCanonical.EmptyActor, TheCanonical.CourseId, TheCanonical.Skills);
+        await service.UpdateRequiredSkills(TheCanonical.AdminActor(), TheCanonical.CourseId, TheCanonical.Skills);
         supervisor.Verify(a => a.Ship());
     }
 
@@ -36,7 +36,7 @@ public class C_UpdateRequiredSkillsService : CoursesServiceTests
     {
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
         await Assert.ThrowsAnyAsync<DomainException>(
-            async () => await service.UpdateRequiredSkills(TheCanonical.EmptyActor, TheCanonical.CourseId, ["a", "a"]));
+            async () => await service.UpdateRequiredSkills(TheCanonical.AdminActor(), TheCanonical.CourseId, ["a", "a"]));
         supervisor.Verify(a => a.Ship(), Times.Never);
     }
 
@@ -44,14 +44,14 @@ public class C_UpdateRequiredSkillsService : CoursesServiceTests
     public async Task UpdateRequiredSkills_success_returns_true()
     {
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
-        var success = await service.UpdateRequiredSkills(TheCanonical.EmptyActor, TheCanonical.CourseId, TheCanonical.Skills);
+        var success = await service.UpdateRequiredSkills(TheCanonical.AdminActor(), TheCanonical.CourseId, TheCanonical.Skills);
         Assert.True(success);
     }
 
     [Fact]
     public async Task UpdateRequiredSkills_failure_returns_false()
     {
-        var success = await service.UpdateRequiredSkills(TheCanonical.EmptyActor, TheCanonical.BadId, TheCanonical.Skills);
+        var success = await service.UpdateRequiredSkills(TheCanonical.AdminActor(), TheCanonical.BadId, TheCanonical.Skills);
         Assert.False(success);
     }
 }

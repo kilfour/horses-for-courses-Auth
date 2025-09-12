@@ -8,7 +8,7 @@ public class D_UpdateTimeSlotsData : CourseDatabaseTests
     private void Act()
     {
         var context = GetDbContext();
-        Reload(context).UpdateTimeSlots(TheCanonical.TimeSlotsFullDayMonday(), a => a);
+        Reload(context).UpdateTimeSlots(TheCanonical.AdminActor(), TheCanonical.TimeSlotsFullDayMonday(), a => a);
         context.SaveChanges();
     }
 

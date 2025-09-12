@@ -19,7 +19,11 @@ namespace HorsesForCourses.Tests.Tools;
 public static class TheCanonical
 {
     public static Actor AdminActor()
-        => new Actor().Declare(ClaimTypes.Name, CoachName).Declare(ClaimTypes.Role, "admin");
+        => new Actor().Declare(ClaimTypes.Name, CoachName)
+            .Declare(ClaimTypes.Role, HorsesForCourses.Core.Domain.Accounts.ApplicationUser.AdminRole);
+    public static Actor CoachActor()
+        => new Actor().Declare(ClaimTypes.Name, CoachName)
+            .Declare(ClaimTypes.Role, HorsesForCourses.Core.Domain.Accounts.ApplicationUser.CoachRole);
     public static Actor AuthenticatedActor()
         => new Actor().Declare(ClaimTypes.Name, CoachName);
     public static Actor EmptyActor => new();
@@ -48,7 +52,7 @@ public static class TheCanonical
     public static readonly DateOnly CourseEnd = 31.January(2025);
 
     public static Course Course()
-        => new(CourseName, CourseStart, CourseEnd);
+        => HorsesForCourses.Core.Domain.Courses.Course.Create(AdminActor(), CourseName, CourseStart, CourseEnd);
 
     public static IEnumerable<TimeSlotRequest> TimeSlotsRequestFullDayMonday()
         => [new(CourseDay.Monday, 9, 17)];

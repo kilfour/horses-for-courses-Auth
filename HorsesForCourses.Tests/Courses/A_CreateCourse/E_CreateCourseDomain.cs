@@ -23,26 +23,38 @@ public class E_CreateCourseDomain : CourseDomainTests
     [Fact]
     public void CreateCourse_WithEmptyName_ShouldThrow()
         => Assert.Throws<CourseNameCanNotBeEmpty>(
-            () => new Course(string.Empty, TheCanonical.CourseStart, TheCanonical.CourseEnd));
+            () => Course.Create(TheCanonical.AdminActor(), string.Empty, TheCanonical.CourseStart, TheCanonical.CourseEnd));
 
     [Fact]
     public void CreateCourse_WithLongName_ShouldThrow()
         => Assert.Throws<CourseNameCanNotBeTooLong>(
-            () => new Course(new string('-', 101), TheCanonical.CourseStart, TheCanonical.CourseEnd));
+            () => Course.Create(TheCanonical.AdminActor(), new string('-', 101), TheCanonical.CourseStart, TheCanonical.CourseEnd));
 
     [Fact]
     public void CreateCourse_WithEndDateBeforeStartDate_ShouldThrow()
         => Assert.Throws<CourseEndDateCanNotBeBeforeStartDate>(
-            () => new Course(TheCanonical.CourseName, new DateOnly(2025, 7, 31), new DateOnly(2025, 7, 1)));
+            () => Course.Create(TheCanonical.AdminActor(), TheCanonical.CourseName, new DateOnly(2025, 7, 31), new DateOnly(2025, 7, 1)));
 
 
     [Fact]
     public void CreateCourse_WithDefaultStartDate_ShouldThrow()
         => Assert.Throws<CourseStartDateCanNotBeEmpty>(
-            () => new Course(TheCanonical.CourseName, default, new DateOnly(2025, 7, 1)));
+            () => Course.Create(TheCanonical.AdminActor(), TheCanonical.CourseName, default, new DateOnly(2025, 7, 1)));
 
     [Fact]
     public void CreateCourse_WithDefaultEndDate_ShouldThrow()
         => Assert.Throws<CourseEndDateCanNotBeEmpty>(
-            () => new Course(TheCanonical.CourseName, new DateOnly(2025, 7, 31), default));
+            () => Course.Create(TheCanonical.AdminActor(), TheCanonical.CourseName, new DateOnly(2025, 7, 31), default));
+
+    [Fact]
+    public void CreateCourse_With_Authenticated_actor_should_throw()
+        => Assert.Throws<UnauthorizedAccessException>(
+            () => Course.Create(TheCanonical.AuthenticatedActor(), TheCanonical.CourseName, new DateOnly(2025, 7, 31), new DateOnly(2025, 7, 31)));
+
+    [Fact]
+    public void CreateCourse_With_Couch_actor_should_throw()
+        => Assert.Throws<UnauthorizedAccessException>(
+            () => Course.Create(TheCanonical.AuthenticatedActor(), TheCanonical.CourseName, new DateOnly(2025, 7, 31), new DateOnly(2025, 7, 31)));
 }
+
+

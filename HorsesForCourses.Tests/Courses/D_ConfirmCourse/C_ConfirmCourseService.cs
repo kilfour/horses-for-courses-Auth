@@ -10,25 +10,25 @@ public class C_ConfirmCourseService : CoursesServiceTests
     [Fact]
     public async Task ConfirmCourse_uses_the_query_object()
     {
-        await service.ConfirmCourse(TheCanonical.EmptyActor, TheCanonical.CourseId);
+        await service.ConfirmCourse(TheCanonical.AdminActor(), TheCanonical.CourseId);
         getCourseById.Verify(a => a.Load(TheCanonical.CourseId));
     }
 
     [Fact]
     public async Task ConfirmCourse_calls_domain()
     {
-        courseSpy.UpdateTimeSlots(TheCanonical.TimeSlotsFullDayMonday(), a => a);
+        courseSpy.UpdateTimeSlots(TheCanonical.AdminActor(), TheCanonical.TimeSlotsFullDayMonday(), a => a);
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
-        await service.ConfirmCourse(TheCanonical.EmptyActor, TheCanonical.CourseId);
+        await service.ConfirmCourse(TheCanonical.AdminActor(), TheCanonical.CourseId);
         Assert.True(courseSpy.IsConfirmed);
     }
 
     [Fact]
     public async Task ConfirmCourse_calls_supervisor_ship()
     {
-        courseSpy.UpdateTimeSlots(TheCanonical.TimeSlotsFullDayMonday(), a => a);
+        courseSpy.UpdateTimeSlots(TheCanonical.AdminActor(), TheCanonical.TimeSlotsFullDayMonday(), a => a);
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
-        await service.ConfirmCourse(TheCanonical.EmptyActor, TheCanonical.CourseId);
+        await service.ConfirmCourse(TheCanonical.AdminActor(), TheCanonical.CourseId);
         supervisor.Verify(a => a.Ship());
     }
 
@@ -37,23 +37,23 @@ public class C_ConfirmCourseService : CoursesServiceTests
     {
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
         await Assert.ThrowsAnyAsync<DomainException>(
-            async () => await service.ConfirmCourse(TheCanonical.EmptyActor, TheCanonical.CourseId));
+            async () => await service.ConfirmCourse(TheCanonical.AdminActor(), TheCanonical.CourseId));
         supervisor.Verify(a => a.Ship(), Times.Never);
     }
 
     [Fact]
     public async Task ConfirmCourse_success_returns_true()
     {
-        courseSpy.UpdateTimeSlots(TheCanonical.TimeSlotsFullDayMonday(), a => a);
+        courseSpy.UpdateTimeSlots(TheCanonical.AdminActor(), TheCanonical.TimeSlotsFullDayMonday(), a => a);
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
-        var success = await service.ConfirmCourse(TheCanonical.EmptyActor, TheCanonical.CourseId);
+        var success = await service.ConfirmCourse(TheCanonical.AdminActor(), TheCanonical.CourseId);
         Assert.True(success);
     }
 
     [Fact]
     public async Task ConfirmCourse_failure_returns_false()
     {
-        var success = await service.ConfirmCourse(TheCanonical.EmptyActor, TheCanonical.CourseId);
+        var success = await service.ConfirmCourse(TheCanonical.AdminActor(), TheCanonical.CourseId);
         Assert.False(success);
     }
 }

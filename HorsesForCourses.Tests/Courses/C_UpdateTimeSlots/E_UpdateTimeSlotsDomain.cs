@@ -64,7 +64,7 @@ public class E_UpdateTimeSlotsDomain : CourseDomainTests
     [Fact]
     public void UpdateTimeSlots_valid_ShouldSucceed()
     {
-        Entity.UpdateTimeSlots(TheCanonical.TimeSlotsFullDayMonday(), a => a);
+        Entity.UpdateTimeSlots(TheCanonical.AdminActor(), TheCanonical.TimeSlotsFullDayMonday(), a => a);
         var timeSlot = Entity.TimeSlots.Single();
         Assert.Equal(CourseDay.Monday, timeSlot.Day);
         Assert.Equal(9, timeSlot.Start.Value);
@@ -76,6 +76,7 @@ public class E_UpdateTimeSlotsDomain : CourseDomainTests
     {
         Assert.Throws<OverlappingTimeSlots>(() =>
             Entity.UpdateTimeSlots(
+                TheCanonical.AdminActor(),
                 TheCanonical.TimeSlotsFullDayMonday()
                 .Concat(TheCanonical.TimeSlotsFullDayMonday()), a => a));
     }
@@ -85,6 +86,7 @@ public class E_UpdateTimeSlotsDomain : CourseDomainTests
     {
         Assert.Throws<OverlappingTimeSlots>(() =>
             Entity.UpdateTimeSlots(
+                TheCanonical.AdminActor(),
                 [ (CourseDay.Monday, 14, 17)
                 , (CourseDay.Monday, 9, 15)], a => a));
     }
@@ -94,6 +96,7 @@ public class E_UpdateTimeSlotsDomain : CourseDomainTests
     {
         Assert.Throws<OverlappingTimeSlots>(() =>
             Entity.UpdateTimeSlots(
+                TheCanonical.AdminActor(),
                 [ (CourseDay.Monday, 9, 17)
                 , (CourseDay.Monday, 14, 15)], a => a));
     }
@@ -103,6 +106,7 @@ public class E_UpdateTimeSlotsDomain : CourseDomainTests
     {
         Assert.Throws<OverlappingTimeSlots>(() =>
             Entity.UpdateTimeSlots(
+                TheCanonical.AdminActor(),
                 [ (CourseDay.Monday, 9, 12)
                 , (CourseDay.Monday, 14, 17)
                 , (CourseDay.Monday, 11, 15)], a => a));
@@ -111,9 +115,9 @@ public class E_UpdateTimeSlotsDomain : CourseDomainTests
     [Fact]
     public void UpdateTimeSlots_AlreadyConfirmed_ShouldThrow()
     {
-        Entity.UpdateTimeSlots(TheCanonical.TimeSlotsFullDayMonday(), a => a);
-        Entity.Confirm();
+        Entity.UpdateTimeSlots(TheCanonical.AdminActor(), TheCanonical.TimeSlotsFullDayMonday(), a => a);
+        Entity.Confirm(TheCanonical.AdminActor());
         Assert.Throws<CourseAlreadyConfirmed>(() =>
-            Entity.UpdateTimeSlots(TheCanonical.TimeSlotsFullDayMonday(), a => a));
+            Entity.UpdateTimeSlots(TheCanonical.AdminActor(), TheCanonical.TimeSlotsFullDayMonday(), a => a));
     }
 }

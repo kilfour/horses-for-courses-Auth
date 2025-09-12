@@ -24,9 +24,9 @@ public class D_AssignCoachData : DatabaseTests
     {
         var context = GetDbContext();
         var entity = Reload(context);
-        entity.UpdateTimeSlots(TheCanonical.TimeSlotsFullDayMonday(), a => a);
-        entity.Confirm();
-        entity.AssignCoach(coach);
+        entity.UpdateTimeSlots(TheCanonical.AdminActor(), TheCanonical.TimeSlotsFullDayMonday(), a => a);
+        entity.Confirm(TheCanonical.AdminActor());
+        entity.AssignCoach(TheCanonical.AdminActor(), coach);
         context.SaveChanges();
     }
 

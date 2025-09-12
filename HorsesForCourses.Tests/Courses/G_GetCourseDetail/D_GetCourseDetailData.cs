@@ -16,9 +16,9 @@ public class D_GetCourseDetailData : DatabaseTests
     {
 
         IdAssignedByDb = AddToDb(TheCanonical.Course()
-            .UpdateRequiredSkills(TheCanonical.Skills)
-            .UpdateTimeSlots(TheCanonical.TimeSlotsFullDayMonday(), a => a)
-            .Confirm());
+            .UpdateRequiredSkills(TheCanonical.AdminActor(), TheCanonical.Skills)
+            .UpdateTimeSlots(TheCanonical.AdminActor(), TheCanonical.TimeSlotsFullDayMonday(), a => a)
+            .Confirm(TheCanonical.AdminActor()));
 
         var detail = await Act();
         Assert.NotNull(detail);

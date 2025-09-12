@@ -27,8 +27,7 @@ public class CoursesService(CoursesRepository Repository) : ICoursesService
 {
     public async Task<IdPrimitive> CreateCourse(Actor actor, string name, DateOnly start, DateOnly end)
     {
-        actor.CanEditCourses();
-        var course = new Course(name, start, end);
+        var course = Course.Create(actor, name, start, end);
         await Repository.Supervisor.Enlist(course);
         await Repository.Supervisor.Ship();
         return course.Id.Value;
@@ -36,10 +35,9 @@ public class CoursesService(CoursesRepository Repository) : ICoursesService
 
     public async Task<bool> UpdateRequiredSkills(Actor actor, IdPrimitive id, IEnumerable<string> skills)
     {
-        actor.CanEditCourses();
         var course = await Repository.GetCourseById.Load(id);
         if (course == null) return false;
-        course.UpdateRequiredSkills(skills);
+        course.UpdateRequiredSkills(actor, skills);
         await Repository.Supervisor.Ship();
         return true;
     }
@@ -50,31 +48,28 @@ public class CoursesService(CoursesRepository Repository) : ICoursesService
         IEnumerable<T> timeSlotInfo,
         Func<T, (CourseDay Day, int Start, int End)> getTimeSlot)
     {
-        actor.CanEditCourses();
         var course = await Repository.GetCourseById.Load(id);
         if (course == null) return false;
-        course.UpdateTimeSlots(timeSlotInfo, getTimeSlot);
+        course.UpdateTimeSlots(actor, timeSlotInfo, getTimeSlot);
         await Repository.Supervisor.Ship();
         return true;
     }
 
     public async Task<bool> ConfirmCourse(Actor actor, IdPrimitive id)
     {
-        actor.CanEditCourses();
         var course = await Repository.GetCourseById.Load(id);
         if (course == null) return false;
-        course.Confirm();
+        course.Confirm(actor);
         await Repository.Supervisor.Ship();
         return true;
     }
 
     public async Task<bool> AssignCoach(Actor actor, IdPrimitive courseId, IdPrimitive coachId)
     {
-        actor.CanEditCourses();
         var course = await Repository.GetCourseById.Load(courseId);
         var coach = await Repository.GetCoachById.One(coachId);
         if (course == null || coach == null) return false;
-        course.AssignCoach(coach);
+        course.AssignCoach(actor, coach);
         await Repository.Supervisor.Ship();
         return true;
     }

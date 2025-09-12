@@ -1,4 +1,5 @@
 ﻿using HorsesForCourses.Core.Abstractions;
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Core.Domain.Coaches;
 using HorsesForCourses.Core.Domain.Courses.InvalidationReasons;
 using HorsesForCourses.Core.Domain.Courses.TimeSlots;
@@ -23,17 +24,24 @@ public class Course : DomainEntity<Course>
     public Coach? AssignedCoach { get; private set; }
 
     private Course() { /*** EFC Was Here ****/ }
-    public Course(string name, DateOnly start, DateOnly end)
+    protected Course(string name, DateOnly start, DateOnly end)
     {
         Name = new CourseName(name);
         Period = Period.From(start, end);
     }
 
+    public static Course Create(Actor actor, string name, DateOnly start, DateOnly end)
+    {
+        actor.CanEditCourses();
+        return new Course(name, start, end);
+    }
+
     bool NotAllowedIfAlreadyConfirmed()
         => IsConfirmed ? throw new CourseAlreadyConfirmed() : true;
 
-    public virtual Course UpdateRequiredSkills(IEnumerable<string> newSkills)
+    public virtual Course UpdateRequiredSkills(Actor actor, IEnumerable<string> newSkills)
     {
+        actor.CanEditCourses();
         NotAllowedIfAlreadyConfirmed();
         NotAllowedWhenThereAreDuplicateSkills();
         return OverWriteRequiredSkills();
@@ -51,9 +59,11 @@ public class Course : DomainEntity<Course>
     }
 
     public virtual Course UpdateTimeSlots<T>(
+        Actor actor,
         IEnumerable<T> timeSlotInfo,
         Func<T, (CourseDay Day, int Start, int End)> getTimeSlot)
     {
+        actor.CanEditCourses();
         var newTimeSlots = TimeSlot.EnumerableFrom(timeSlotInfo, getTimeSlot);
         NotAllowedIfAlreadyConfirmed();
         NotAllowedWhenTimeSlotsOverlap();
@@ -66,8 +76,9 @@ public class Course : DomainEntity<Course>
         // ------------------------------------------------------------------------------------------------
     }
 
-    public Course Confirm()
+    public Course Confirm(Actor actor)
     {
+        actor.CanEditCourses();
         NotAllowedIfAlreadyConfirmed();
         NotAllowedWhenThereAreNoTimeSlots();
         return ConfirmIt();
@@ -79,8 +90,9 @@ public class Course : DomainEntity<Course>
         // ------------------------------------------------------------------------------------------------
     }
 
-    public virtual Course AssignCoach(Coach coach)
+    public virtual Course AssignCoach(Actor actor, Coach coach)
     {
+        actor.CanEditCourses();
         NotAllowedIfNotYetConfirmed();
         NotAllowedIfCourseAlreadyHasCoach();
         NotAllowedIfCoachIsInsuitable(coach);

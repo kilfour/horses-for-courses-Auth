@@ -22,14 +22,14 @@ public record Actor
 
     public void CanEditCoach(string coachEmail)
     {
-        if (HasStake(ClaimTypes.Role, "admin")) return;
-        if (HasStake(ClaimTypes.Role, "coach") && HasStake(ClaimTypes.Email, coachEmail)) return;
+        if (HasStake(ClaimTypes.Role, ApplicationUser.AdminRole)) return;
+        if (HasStake(ClaimTypes.Role, ApplicationUser.CoachRole) && HasStake(ClaimTypes.Email, coachEmail)) return;
         throw new UnauthorizedAccessException();
     }
 
     public void CanEditCourses()
     {
-        if (HasStake(ClaimTypes.Role, "admin")) return;
+        if (HasStake(ClaimTypes.Role, ApplicationUser.AdminRole)) return;
         throw new UnauthorizedAccessException();
     }
     // ------------------------------------------------------------

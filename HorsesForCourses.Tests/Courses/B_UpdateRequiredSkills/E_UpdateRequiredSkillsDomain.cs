@@ -21,7 +21,7 @@ public class E_UpdateRequiredSkillsDomain : CourseDomainTests
     [Fact]
     public void UpdateRequiredSkills_WithValidData_ShouldSucceed()
     {
-        Entity.UpdateRequiredSkills(TheCanonical.Skills);
+        Entity.UpdateRequiredSkills(TheCanonical.AdminActor(), TheCanonical.Skills);
         Assert.Equal(TheCanonical.HardSkillsList, Entity.RequiredSkills);
     }
 
@@ -29,20 +29,30 @@ public class E_UpdateRequiredSkillsDomain : CourseDomainTests
     public void UpdateRequiredSkills_WithInValidSkill_Throws()
     {
         var skills = new List<string> { "" };
-        Assert.Throws<SkillValueCanNotBeEmpty>(() => Entity.UpdateRequiredSkills(skills));
+        Assert.Throws<SkillValueCanNotBeEmpty>(() => Entity.UpdateRequiredSkills(TheCanonical.AdminActor(), skills));
     }
 
     [Fact]
     public void UpdateRequiredSkills_With_Duplicates_Throws()
     {
         var skills = new List<string> { "a", "a" };
-        Assert.Throws<CourseAlreadyHasSkill>(() => Entity.UpdateRequiredSkills(skills));
+        Assert.Throws<CourseAlreadyHasSkill>(() => Entity.UpdateRequiredSkills(TheCanonical.AdminActor(), skills));
     }
 
     [Fact]
     public void UpdateRequiredSkills_When_Confirmed_Throws()
         => Assert.Throws<CourseAlreadyConfirmed>(() =>
-            Entity.UpdateTimeSlots(TheCanonical.TimeSlotsFullDayMonday(), a => a)
-                .Confirm()
-                .UpdateRequiredSkills(["one"]));
+            Entity.UpdateTimeSlots(TheCanonical.AdminActor(), TheCanonical.TimeSlotsFullDayMonday(), a => a)
+                .Confirm(TheCanonical.AdminActor())
+                .UpdateRequiredSkills(TheCanonical.AdminActor(), ["one"]));
+
+    [Fact]
+    public void UpdateRequiredSkills_With_Authenticated_actor_should_throw()
+        => Assert.Throws<UnauthorizedAccessException>(
+            () => Entity.UpdateRequiredSkills(TheCanonical.AuthenticatedActor(), TheCanonical.Skills));
+
+    [Fact]
+    public void UpdateRequiredSkills_With_Couch_actor_should_throw()
+        => Assert.Throws<UnauthorizedAccessException>(
+            () => Entity.UpdateRequiredSkills(TheCanonical.CoachActor(), TheCanonical.Skills));
 }

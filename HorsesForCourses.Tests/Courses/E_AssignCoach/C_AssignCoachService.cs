@@ -1,3 +1,4 @@
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Core.Domain.Coaches;
 using HorsesForCourses.Core.Domain.Courses;
 using HorsesForCourses.Tests.Tools;
@@ -12,15 +13,15 @@ public class C_AssignCoachService : CoursesServiceTests
     private void SetUpMocks()
     {
         getCoachById.Setup(a => a.One(TheCanonical.CoachId)).ReturnsAsync(TheCanonical.Coach());
-        courseSpy.UpdateTimeSlots(TheCanonical.TimeSlotsFullDayMonday(), a => a);
-        courseSpy.Confirm();
+        courseSpy.UpdateTimeSlots(TheCanonical.AdminActor(), TheCanonical.TimeSlotsFullDayMonday(), a => a);
+        courseSpy.Confirm(TheCanonical.AdminActor());
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
     }
 
     [Fact]
     public async Task AssignCoach_uses_the_query_objects()
     {
-        await service.AssignCoach(TheCanonical.EmptyActor, TheCanonical.CourseId, TheCanonical.CoachId);
+        await service.AssignCoach(TheCanonical.AdminActor(), TheCanonical.CourseId, TheCanonical.CoachId);
         getCourseById.Verify(a => a.Load(TheCanonical.CourseId));
         getCoachById.Verify(a => a.One(TheCanonical.CoachId));
     }
@@ -29,7 +30,7 @@ public class C_AssignCoachService : CoursesServiceTests
     public async Task AssignCoach_calls_domain()
     {
         SetUpMocks();
-        await service.AssignCoach(TheCanonical.EmptyActor, TheCanonical.CourseId, TheCanonical.CoachId);
+        await service.AssignCoach(TheCanonical.AdminActor(), TheCanonical.CourseId, TheCanonical.CoachId);
         Assert.True(courseSpy.AssignCoachCalled);
         Assert.Equal(TheCanonical.CoachName, courseSpy.AssignCoachSeen!.Name.Value);
     }
@@ -38,7 +39,7 @@ public class C_AssignCoachService : CoursesServiceTests
     public async Task AssignCoach_calls_supervisor_ship()
     {
         SetUpMocks();
-        await service.AssignCoach(TheCanonical.EmptyActor, TheCanonical.CourseId, TheCanonical.CoachId);
+        await service.AssignCoach(TheCanonical.AdminActor(), TheCanonical.CourseId, TheCanonical.CoachId);
         supervisor.Verify(a => a.Ship());
     }
 
@@ -46,7 +47,7 @@ public class C_AssignCoachService : CoursesServiceTests
     public async Task AssignCoach_Success_returns_true()
     {
         SetUpMocks();
-        Assert.True(await service.AssignCoach(TheCanonical.EmptyActor, TheCanonical.CourseId, TheCanonical.CoachId));
+        Assert.True(await service.AssignCoach(TheCanonical.AdminActor(), TheCanonical.CourseId, TheCanonical.CoachId));
     }
 
     [Fact]
@@ -54,16 +55,16 @@ public class C_AssignCoachService : CoursesServiceTests
     {
         getCoachById.Setup(a => a.One(TheCanonical.CoachId)).ReturnsAsync(TheCanonical.Coach());
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync((Course)null!);
-        Assert.False(await service.AssignCoach(TheCanonical.EmptyActor, TheCanonical.BadId, TheCanonical.CoachId));
+        Assert.False(await service.AssignCoach(TheCanonical.AdminActor(), TheCanonical.BadId, TheCanonical.CoachId));
     }
 
     [Fact]
     public async Task AssignCoach_Returns_false_If_No_Coach()
     {
         getCoachById.Setup(a => a.One(TheCanonical.CoachId)).ReturnsAsync((Coach)null!);
-        courseSpy.UpdateTimeSlots(TheCanonical.TimeSlotsFullDayMonday(), a => a);
-        courseSpy.Confirm();
+        courseSpy.UpdateTimeSlots(TheCanonical.AdminActor(), TheCanonical.TimeSlotsFullDayMonday(), a => a);
+        courseSpy.Confirm(TheCanonical.AdminActor());
         getCourseById.Setup(a => a.Load(TheCanonical.CourseId)).ReturnsAsync(courseSpy);
-        Assert.False(await service.AssignCoach(TheCanonical.EmptyActor, TheCanonical.CourseId, TheCanonical.CoachId));
+        Assert.False(await service.AssignCoach(TheCanonical.AdminActor(), TheCanonical.CourseId, TheCanonical.CoachId));
     }
 }

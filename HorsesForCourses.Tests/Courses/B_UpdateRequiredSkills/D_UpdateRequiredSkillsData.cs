@@ -9,7 +9,7 @@ public class D_UpdateRequiredSkillsData : CourseDatabaseTests
     private void Act()
     {
         var context = GetDbContext();
-        Reload(context).UpdateRequiredSkills(TheCanonical.Skills);
+        Reload(context).UpdateRequiredSkills(TheCanonical.AdminActor(), TheCanonical.Skills);
         context.SaveChanges();
     }
 
