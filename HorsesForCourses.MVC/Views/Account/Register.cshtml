@@ -37,6 +37,12 @@
         <span asp-validation-for="AsCoach" class="text-danger"></span>
     </div>
 
+    <div class="mb-3 form-check">
+        <input asp-for="AsAdmin" class="form-check-input" type="checkbox" />
+        <label asp-for="AsAdmin" class="form-check-label"></label>
+        <span asp-validation-for="AsAdmin" class="text-danger"></span>
+    </div>
+
     <button type="submit" class="btn btn-primary">Create account</button>
 </form>
 

@@ -33,15 +33,14 @@ public class Coach : DomainEntity<Coach>
 
     public virtual void UpdateSkills(Actor actor, IEnumerable<string> newSkills)
     {
-        actor.IsAuthenticated();
-        //OnlyActorsWhoRegisteredAsCoachCanEdit();
+
+        OnlyAdminsAndActorsWhoRegisteredAsCoachCanEdit();
         NotAllowedWhenThereAreDuplicateSkills();
         OverwriteSkills();
         // ------------------------------------------------------------------------------------------------
         // --
-        // bool OnlyActorsWhoRegisteredAsCoachCanEdit()
-        //     => permission.CoachId != Id ? throw new UnauthorizedAccessException() : true;
-
+        void OnlyAdminsAndActorsWhoRegisteredAsCoachCanEdit()
+            => actor.CanEditCoach(Email.Value);
         bool NotAllowedWhenThereAreDuplicateSkills()
             => newSkills.NoDuplicatesAllowed(a => new CoachAlreadyHasSkill(string.Join(",", a)));
         void OverwriteSkills()

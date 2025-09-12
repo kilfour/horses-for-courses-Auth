@@ -7,4 +7,5 @@ public class RegisterAccountViewModel
     public string Pass { get; set; } = string.Empty;
     public string PassConfirm { get; set; } = string.Empty;
     public bool AsCoach { get; set; }
+    public bool AsAdmin { get; set; }
 }

@@ -1,28 +1,27 @@
 using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Core.Domain.Accounts.InvalidationReasons;
-using HorsesForCourses.Core.Domain.Coaches;
-using HorsesForCourses.Core.Domain.Coaches.InvalidationReasons;
 using HorsesForCourses.Tests.Tools;
-using HorsesForCourses.Tests.Tools.Coaches;
 
 
 namespace HorsesForCourses.Tests.Accounts.A_RegisterAccount;
 
 public class E_RegisterAccountDomain
 {
-    private ApplicationUser CreateValidEntity()
+    private ApplicationUser CreateValidEntity(string role = "")
         => ApplicationUser.Create(
             TheCanonical.CoachName,
             TheCanonical.CoachEmail,
             TheCanonical.Password,
-            TheCanonical.Password);
+            TheCanonical.Password,
+            role);
 
     [Fact]
     public void RegisterAccount_WithValidData_ShouldSucceed()
     {
-        var applicationUser = CreateValidEntity();
+        var applicationUser = CreateValidEntity("any role");
         Assert.Equal(TheCanonical.CoachName, applicationUser.Name.Value);
         Assert.Equal(TheCanonical.CoachEmail, applicationUser.Email.Value);
+        Assert.Equal("any role", applicationUser.Role);
         Assert.NotEmpty(applicationUser.PasswordHash);
     }
 
@@ -37,7 +36,8 @@ public class E_RegisterAccountDomain
                     "",
                     TheCanonical.CoachEmail,
                     TheCanonical.Password,
-                    TheCanonical.Password));
+                    TheCanonical.Password,
+                    ""));
 
     [Fact]
     public void RegisterAccount_WithLongName_ShouldThrow()
@@ -46,7 +46,8 @@ public class E_RegisterAccountDomain
             new string('-', 101),
             TheCanonical.CoachEmail,
             TheCanonical.Password,
-            TheCanonical.Password));
+            TheCanonical.Password,
+            ""));
 
     [Fact]
     public void RegisterAccount_WithEmptyEmail_ShouldThrow()
@@ -55,7 +56,8 @@ public class E_RegisterAccountDomain
             TheCanonical.CoachName,
             "",
             TheCanonical.Password,
-            TheCanonical.Password));
+            TheCanonical.Password,
+            ""));
 
     [Fact]
     public void RegisterAccount_WithLongEmail_ShouldThrow()
@@ -64,7 +66,8 @@ public class E_RegisterAccountDomain
             TheCanonical.CoachName,
             new string('-', 101),
             TheCanonical.Password,
-            TheCanonical.Password));
+            TheCanonical.Password,
+            ""));
 
     [Fact]
     public void RegisterAccount_passwords_no_match_ShouldThrow()
@@ -73,7 +76,8 @@ public class E_RegisterAccountDomain
             TheCanonical.CoachName,
             new string('-', 101),
             TheCanonical.Password,
-            "other"));
+            "other"
+            , ""));
 
     [Fact]
     public void RegisterAccount_passwords_empty_ShouldThrow()
@@ -81,6 +85,7 @@ public class E_RegisterAccountDomain
             () => ApplicationUser.Create(
             TheCanonical.CoachName,
             new string('-', 101),
+            "",
             "",
             ""));
 }

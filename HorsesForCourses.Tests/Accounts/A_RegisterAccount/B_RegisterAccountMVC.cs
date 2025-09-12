@@ -37,6 +37,7 @@ public class B_RegisterAccountMVC : AccountMVCControllerTests
             TheCanonical.CoachEmail,
             TheCanonical.Password,
             TheCanonical.Password,
+            false,
             false));
     }
 
@@ -56,6 +57,7 @@ public class B_RegisterAccountMVC : AccountMVCControllerTests
                 It.IsAny<string>(), // email
                 It.IsAny<string>(), // pass
                 It.IsAny<string>(), // passconfirm
+                false,
                 false))
             .ThrowsAsync(new PasswordAndPasswordConfirmDoNotMatch());
 

@@ -8,7 +8,7 @@ namespace HorsesForCourses.Service.Accounts;
 
 public interface IAccountsService
 {
-    Task<bool> Register(string name, string email, string pass, string passConfirm, bool asCoach);
+    Task<bool> Register(string name, string email, string pass, string passConfirm, bool asCoach, bool asAdmin);
     Task<IEnumerable<Claim>> Login(string coachEmail, string password);
 }
 
@@ -24,10 +24,10 @@ public class AccountsService : IAccountsService
         this.getApplicationUserByEmail = getApplicationUserByEmail;
     }
 
-    public Task<bool> Register(string name, string email, string pass, string passConfirm, bool asCoach)
+    public Task<bool> Register(string name, string email, string pass, string passConfirm, bool asCoach, bool asAdmin)
     {
-        // 
-        supervisor.Enlist(ApplicationUser.Create(name, email, pass, passConfirm));
+        var role = asAdmin ? ApplicationUser.AdminRole : asCoach ? ApplicationUser.CoachRole : string.Empty;
+        supervisor.Enlist(ApplicationUser.Create(name, email, pass, passConfirm, role));
         supervisor.Ship();
         return Task.FromResult(true);
     }

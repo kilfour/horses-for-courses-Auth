@@ -31,7 +31,8 @@ public class AccountController : MvcController
                 viewModel.Email,
                 viewModel.Pass,
                 viewModel.PassConfirm,
-                viewModel.AsCoach))
+                viewModel.AsCoach,
+                viewModel.AsAdmin))
             .OnSuccess(() => RedirectToAction(nameof(Index), "Home"))
             .OnException(() => View(viewModel));
 

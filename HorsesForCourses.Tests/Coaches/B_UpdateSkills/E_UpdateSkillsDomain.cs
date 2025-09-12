@@ -1,3 +1,4 @@
+using HorsesForCourses.Core.Domain.Accounts;
 using HorsesForCourses.Core.Domain.Coaches.InvalidationReasons;
 using HorsesForCourses.Core.Domain.Skills;
 using HorsesForCourses.Tests.Tools;
@@ -19,9 +20,17 @@ public class E_UpdateSkillsDomain : CoachDomainTests
         => Assert.Throws<SkillValueCanNotBeEmpty>(() => Skill.From(value!));
 
     [Fact]
-    public void UpdateSkills_WithValidData_ShouldSucceed()
+    public void UpdateSkills_WithValidData_ShouldSucceed_for_Admin()
     {
-        Entity.UpdateSkills(TheCanonical.AuthenticatedActor(), TheCanonical.Skills);
+        Entity.UpdateSkills(TheCanonical.AdminActor(), TheCanonical.Skills);
+        Assert.Equal(TheCanonical.HardSkills.OrderBy(a => a.Value), Entity.Skills.OrderBy(a => a.Value));
+    }
+
+    [Fact]
+    public void UpdateSkills_WithValidData_ShouldSucceed_for_Creating_actor()
+    {
+        var actor = TheCanonical.ApplicationUser(ApplicationUser.CoachRole).EnterScene();
+        Entity.UpdateSkills(actor, TheCanonical.Skills);
         Assert.Equal(TheCanonical.HardSkills.OrderBy(a => a.Value), Entity.Skills.OrderBy(a => a.Value));
     }
 
@@ -29,14 +38,14 @@ public class E_UpdateSkillsDomain : CoachDomainTests
     public void UpdateSkills_WithInValidSkill_Throws()
     {
         var skills = new List<string> { "" };
-        Assert.Throws<SkillValueCanNotBeEmpty>(() => Entity.UpdateSkills(TheCanonical.AuthenticatedActor(), skills));
+        Assert.Throws<SkillValueCanNotBeEmpty>(() => Entity.UpdateSkills(TheCanonical.AdminActor(), skills));
     }
 
     [Fact]
     public void UpdateSkills_With_Duplicates_Throws()
     {
         var skills = new List<string> { "a", "a" };
-        Assert.Throws<CoachAlreadyHasSkill>(() => Entity.UpdateSkills(TheCanonical.AuthenticatedActor(), skills));
+        Assert.Throws<CoachAlreadyHasSkill>(() => Entity.UpdateSkills(TheCanonical.AdminActor(), skills));
     }
 
     [Fact]
