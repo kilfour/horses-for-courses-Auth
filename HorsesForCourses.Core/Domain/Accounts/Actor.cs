@@ -26,6 +26,12 @@ public record Actor
         if (HasStake(ClaimTypes.Role, "coach") && HasStake(ClaimTypes.Email, coachEmail)) return;
         throw new UnauthorizedAccessException();
     }
+
+    public void CanEditCourses()
+    {
+        if (HasStake(ClaimTypes.Role, "admin")) return;
+        throw new UnauthorizedAccessException();
+    }
     // ------------------------------------------------------------
     // -- To Claims and Back
     public IEnumerable<Claim> ClaimIt()
@@ -45,5 +51,9 @@ public record Actor
         if (stakes[type] != value) return false;
         return true;
     }
+
+    public static Actor SystemActor()
+        => new Actor().Declare(ClaimTypes.Role, ApplicationUser.SystemRole);
+
     // ------------------------------------------------------------
 }

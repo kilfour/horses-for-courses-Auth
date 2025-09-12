@@ -8,6 +8,7 @@ public class ApplicationUser : DomainEntity<ApplicationUser>
 {
     public const string AdminRole = "admin";
     public const string CoachRole = "coach";
+    public const string SystemRole = "system";
 
     public ApplicationUserName Name { get; init; } = ApplicationUserName.Empty;
     public ApplicationUserEmail Email { get; init; } = ApplicationUserEmail.Empty;

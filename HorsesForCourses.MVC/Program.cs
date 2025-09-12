@@ -31,7 +31,17 @@ using (var scope = app.Services.CreateScope())
 {
     scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.EnsureCreated();
 }
-
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next();
+    }
+    catch (UnauthorizedAccessException)
+    {
+        context.Response.Redirect("/Account/AccessDenied");
+    }
+});
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
