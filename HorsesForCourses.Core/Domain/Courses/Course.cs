@@ -30,9 +30,12 @@ public class Course : DomainEntity<Course>
         Period = Period.From(start, end);
     }
 
+    private static void OnlyActorsWithAdminRoleCanCreateOrEditCourses(Actor actor)
+        => actor.CanEditCourses();
+
     public static Course Create(Actor actor, string name, DateOnly start, DateOnly end)
     {
-        actor.CanEditCourses();
+        OnlyActorsWithAdminRoleCanCreateOrEditCourses(actor);
         return new Course(name, start, end);
     }
 
@@ -41,7 +44,7 @@ public class Course : DomainEntity<Course>
 
     public virtual Course UpdateRequiredSkills(Actor actor, IEnumerable<string> newSkills)
     {
-        actor.CanEditCourses();
+        OnlyActorsWithAdminRoleCanCreateOrEditCourses(actor);
         NotAllowedIfAlreadyConfirmed();
         NotAllowedWhenThereAreDuplicateSkills();
         return OverWriteRequiredSkills();
@@ -63,7 +66,7 @@ public class Course : DomainEntity<Course>
         IEnumerable<T> timeSlotInfo,
         Func<T, (CourseDay Day, int Start, int End)> getTimeSlot)
     {
-        actor.CanEditCourses();
+        OnlyActorsWithAdminRoleCanCreateOrEditCourses(actor);
         var newTimeSlots = TimeSlot.EnumerableFrom(timeSlotInfo, getTimeSlot);
         NotAllowedIfAlreadyConfirmed();
         NotAllowedWhenTimeSlotsOverlap();
@@ -78,7 +81,7 @@ public class Course : DomainEntity<Course>
 
     public Course Confirm(Actor actor)
     {
-        actor.CanEditCourses();
+        OnlyActorsWithAdminRoleCanCreateOrEditCourses(actor);
         NotAllowedIfAlreadyConfirmed();
         NotAllowedWhenThereAreNoTimeSlots();
         return ConfirmIt();
@@ -92,7 +95,7 @@ public class Course : DomainEntity<Course>
 
     public virtual Course AssignCoach(Actor actor, Coach coach)
     {
-        actor.CanEditCourses();
+        OnlyActorsWithAdminRoleCanCreateOrEditCourses(actor);
         NotAllowedIfNotYetConfirmed();
         NotAllowedIfCourseAlreadyHasCoach();
         NotAllowedIfCoachIsInsuitable(coach);

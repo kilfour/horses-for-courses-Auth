@@ -23,27 +23,27 @@ public class E_RegisterCoachDomain : CoachDomainTests
     [Fact]
     public void RegisterCoach_WithEmptyName_ShouldThrow()
         => Assert.Throws<CoachNameCanNotBeEmpty>(
-            () => Coach.From(TheCanonical.AuthenticatedActor(), string.Empty, TheCanonical.CoachEmail));
+            () => Coach.From(TheCanonical.AdminActor(), string.Empty, TheCanonical.CoachEmail));
 
     [Fact]
     public void RegisterCoach_WithLongName_ShouldThrow()
         => Assert.Throws<CoachNameCanNotBeTooLong>(
-            () => Coach.From(TheCanonical.AuthenticatedActor(), new string('-', 101), TheCanonical.CoachEmail));
+            () => Coach.From(TheCanonical.AdminActor(), new string('-', 101), TheCanonical.CoachEmail));
 
     [Fact]
     public void RegisterCoach_WithInvalidActor_ShouldThrow()
         => Assert.Throws<CoachNameCanNotBeTooLong>(
-            () => Coach.From(TheCanonical.AuthenticatedActor(), new string('-', 101), TheCanonical.CoachEmail));
+            () => Coach.From(TheCanonical.AdminActor(), new string('-', 101), TheCanonical.CoachEmail));
 
     [Fact]
     public void RegisterCoach_WithEmptyEmail_ShouldThrow()
         => Assert.Throws<CoachEmailCanNotBeEmpty>(
-            () => Coach.From(TheCanonical.AuthenticatedActor(), TheCanonical.CoachName, string.Empty));
+            () => Coach.From(TheCanonical.AdminActor(), TheCanonical.CoachName, string.Empty));
 
     [Fact]
     public void RegisterCoach_WithLongEmail_ShouldThrow()
         => Assert.Throws<CoachEmailCanNotBeTooLong>(
-            () => Coach.From(TheCanonical.AuthenticatedActor(), TheCanonical.CoachName, new string('-', 101)));
+            () => Coach.From(TheCanonical.AdminActor(), TheCanonical.CoachName, new string('-', 101)));
 
 
     [Fact]
@@ -54,5 +54,5 @@ public class E_RegisterCoachDomain : CoachDomainTests
     [Fact]
     public void RegisterCoach_With_non_admin_ShouldThrow()
         => Assert.Throws<UnauthorizedAccessException>(
-            () => Coach.From(TheCanonical.EmptyActor, TheCanonical.CoachName, new string('-', 101)));
+            () => Coach.From(TheCanonical.CoachActor(), TheCanonical.CoachName, new string('-', 101)));
 }

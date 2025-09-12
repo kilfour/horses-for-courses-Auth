@@ -14,7 +14,7 @@ public class C_RegisterCoachService : CoachesServiceTests
     [Fact]
     public async Task RegisterCoach_delivers_the_coach_to_the_supervisor()
     {
-        await service.RegisterCoach(TheCanonical.AuthenticatedActor(), TheCanonical.CoachName, TheCanonical.CoachEmail);
+        await service.RegisterCoach(TheCanonical.AdminActor(), TheCanonical.CoachName, TheCanonical.CoachEmail);
         supervisor.Verify(a => a.Enlist(
             It.Is<Coach>(a =>
                 a.Name.Value == TheCanonical.CoachName &&
@@ -25,7 +25,7 @@ public class C_RegisterCoachService : CoachesServiceTests
     [Fact]
     public async Task RegisterCoach_Does_Not_Ship_On_Exception()
     {
-        await Assert.ThrowsAnyAsync<DomainException>(async () => await service.RegisterCoach(TheCanonical.AuthenticatedActor(), string.Empty, string.Empty));
+        await Assert.ThrowsAnyAsync<DomainException>(async () => await service.RegisterCoach(TheCanonical.AdminActor(), string.Empty, string.Empty));
         supervisor.Verify(a => a.Ship(), Times.Never);
     }
 }

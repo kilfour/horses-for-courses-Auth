@@ -20,6 +20,12 @@ public record Actor
             throw new UnauthorizedAccessException();
     }
 
+    public void CanCreateCoach()
+    {
+        if (HasStake(ClaimTypes.Role, ApplicationUser.AdminRole)) return;
+        throw new UnauthorizedAccessException();
+    }
+
     public void CanEditCoach(string coachEmail)
     {
         if (HasStake(ClaimTypes.Role, ApplicationUser.AdminRole)) return;

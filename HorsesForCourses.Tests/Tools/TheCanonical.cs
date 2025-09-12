@@ -34,7 +34,7 @@ public static class TheCanonical
     public const string CoachName = "The Coach";
     public const string CoachEmail = "coach@coaching.mcCoach";
     public static Coach Coach()
-        => HorsesForCourses.Core.Domain.Coaches.Coach.From(AuthenticatedActor(), CoachName, CoachEmail);
+        => HorsesForCourses.Core.Domain.Coaches.Coach.From(AdminActor(), CoachName, CoachEmail);
 
     public static PagedResult<CoachSummary> CoachSummaryList()
         => new([new CoachSummary(CoachId, CoachName, CoachEmail, 0)], 1, 1, 25);
