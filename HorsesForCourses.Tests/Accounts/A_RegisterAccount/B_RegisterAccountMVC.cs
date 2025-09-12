@@ -42,12 +42,11 @@ public class B_RegisterAccountMVC : AccountMVCControllerTests
     }
 
     [Fact]
-    public async Task Register_POST_Redirects_To_Index_On_Success()
+    public async Task Register_POST_Redirects_To_Login_POST_On_Success()
     {
         var result = await controller.Register(viewModel);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal("Home", redirect.ControllerName);
-        Assert.Equal("Index", redirect.ActionName);
+        Assert.Equal("Login", redirect.ActionName);
     }
 
     private void MakeServiceMethodThrow()

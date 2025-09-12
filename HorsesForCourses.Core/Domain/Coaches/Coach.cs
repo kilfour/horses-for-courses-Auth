@@ -25,7 +25,7 @@ public class Coach : DomainEntity<Coach>
         Email = new CoachEmail(email);
     }
 
-    public static Coach From(Actor actor, string name, string email)
+    public static Coach Create(Actor actor, string name, string email)
     {
         OnlyActorsWithAdminRoleCanCreateCoach();
         return new(name, email);

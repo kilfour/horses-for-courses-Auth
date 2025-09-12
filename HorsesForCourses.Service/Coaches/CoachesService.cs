@@ -25,7 +25,7 @@ public class CoachesService(
 {
     public async Task<IdPrimitive> RegisterCoach(Actor actor, string name, string email)
     {
-        var coach = Coach.From(actor, name, email);
+        var coach = Coach.Create(actor, name, email);
         await Supervisor.Enlist(coach);
         await Supervisor.Ship();
         return coach.Id.Value;

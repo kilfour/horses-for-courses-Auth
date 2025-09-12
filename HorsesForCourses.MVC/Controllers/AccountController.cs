@@ -33,7 +33,7 @@ public class AccountController : MvcController
                 viewModel.PassConfirm,
                 viewModel.AsCoach,
                 viewModel.AsAdmin))
-            .OnSuccess(() => RedirectToAction(nameof(Index), "Home"))
+            .OnSuccess(() => RedirectToAction(nameof(Login), new { email = viewModel.Email, password = viewModel.Pass }))
             .OnException(() => View(viewModel));
 
     [HttpGet]

@@ -1,7 +1,6 @@
 ### Todo: 
   * HorsesForCourses.Tests.Accounts.B_Login.C_LoginService
   * Could do with an *is everything resolvable* test. Not a priority, just QoL.
-  * Implement Login after Register.  
   * AccountsService.Register(asCoach:true, ...): very brittle
   * We need more `Act` methods in tests. The actor thing was painfull.
   * There are a lot of `It.IsAny<Actor>()`'s around.

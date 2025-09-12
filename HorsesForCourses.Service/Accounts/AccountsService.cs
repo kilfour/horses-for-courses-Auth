@@ -30,7 +30,7 @@ public class AccountsService : IAccountsService
         var role = asAdmin ? ApplicationUser.AdminRole : asCoach ? ApplicationUser.CoachRole : string.Empty;
         supervisor.Enlist(ApplicationUser.Create(name, email, pass, passConfirm, role));
         if (role == ApplicationUser.CoachRole)
-            supervisor.Enlist(Coach.From(Actor.SystemActor(), name, email));
+            supervisor.Enlist(Coach.Create(Actor.SystemActor(), name, email));
         supervisor.Ship();
         return Task.FromResult(true);
     }
