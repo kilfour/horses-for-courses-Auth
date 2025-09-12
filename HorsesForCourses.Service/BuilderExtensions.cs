@@ -4,12 +4,10 @@ using HorsesForCourses.Service.Coaches;
 using HorsesForCourses.Service.Coaches.GetCoachById;
 using HorsesForCourses.Service.Coaches.GetCoachDetail;
 using HorsesForCourses.Service.Coaches.GetCoaches;
-using HorsesForCourses.Service.Coaches.Repository;
 using HorsesForCourses.Service.Courses;
 using HorsesForCourses.Service.Courses.GetCourseById;
 using HorsesForCourses.Service.Courses.GetCourseDetail;
 using HorsesForCourses.Service.Courses.GetCourses;
-using HorsesForCourses.Service.Courses.Repository;
 using HorsesForCourses.Service.Warehouse;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,13 +23,11 @@ public static class BuilderExtensions
             // === Coaches === 
             .AddScoped<IGetCoachSummaries, GetCoachSummaries>()
             .AddScoped<IGetCoachDetailQuery, GetCoachDetailQuery>()
-            .AddScoped<CoachesRepository>()
             .AddScoped<ICoachesService, CoachesService>()
             // === Courses === 
             .AddScoped<IGetCourseById, GetCourseById>()
             .AddScoped<IGetCourseSummaries, GetCourseSummaries>()
             .AddScoped<IGetCourseDetail, GetCourseDetail>()
-            .AddScoped<CoursesRepository>()
             .AddScoped<ICoursesService, CoursesService>()
             // === Accounts === 
             .AddScoped<IGetApplicationUserByEmail, GetApplicationUserByEmail>()
